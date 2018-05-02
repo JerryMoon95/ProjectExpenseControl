@@ -17,6 +17,15 @@ namespace ProjectExpenseControl.DataAccess
 
         }
 
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<AccountingAccount> AccountingAccounts { get; set; }
+        public DbSet<Area> Areas { get; set; }
+        public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Request> Requests { get; set; }
+        public DbSet<StatusAprov> StatusAprovs { get; set; }
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
@@ -29,10 +38,6 @@ namespace ProjectExpenseControl.DataAccess
                     m.MapRightKey("TUSR_IDE_RESOURCE");
                 });
         }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<Area> Area { get; set; }
 
     }
 }

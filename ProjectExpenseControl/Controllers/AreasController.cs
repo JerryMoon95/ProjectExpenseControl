@@ -36,7 +36,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Area area = db.Area.Find(id);
+            Area area = db.Areas.Find(id);
             if (area == null)
             {
                 return HttpNotFound();
@@ -74,7 +74,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Area area = db.Area.Find(id);
+            Area area = db.Areas.Find(id);
             if (area == null)
             {
                 return HttpNotFound();
@@ -105,7 +105,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Area area = db.Area.Find(id);
+            Area area = db.Areas.Find(id);
             if (area == null)
             {
                 return HttpNotFound();
@@ -118,8 +118,8 @@ namespace ProjectExpenseControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Area area = db.Area.Find(id);
-            db.Area.Remove(area);
+            Area area = db.Areas.Find(id);
+            db.Areas.Remove(area);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -135,7 +135,7 @@ namespace ProjectExpenseControl.Controllers
 
         public JsonResult GetAreas()
         {
-            var dbResult = db.Area.ToList();
+            var dbResult = db.Areas.ToList();
             var areas = (from area in dbResult
                              select new
                              {

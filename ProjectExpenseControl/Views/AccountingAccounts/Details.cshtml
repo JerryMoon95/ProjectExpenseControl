@@ -1,0 +1,26 @@
+﻿@model ProjectExpenseControl.Models.AccountingAccount
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AccountingAccount</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ACC_DES_ACCOUNT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ACC_DES_ACCOUNT)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ACC_IDE_ACCOUNT }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

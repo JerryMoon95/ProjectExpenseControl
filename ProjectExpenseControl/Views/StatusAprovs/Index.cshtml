@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ProjectExpenseControl.Models.StatusAprov>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.STA_DES_STATUS)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.STA_DES_STATUS)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.STA_IDE_STATUS_APROV }) |
+            @Html.ActionLink("Details", "Details", new { id=item.STA_IDE_STATUS_APROV }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.STA_IDE_STATUS_APROV })
+        </td>
+    </tr>
+}
+
+</table>

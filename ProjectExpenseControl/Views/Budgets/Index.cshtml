@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ProjectExpenseControl.Models.Budget>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_IDE_USER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_IDE_ACCOUNT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_IDE_AREA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_DES_QUANTITY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_DES_PERIOD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BUD_FH_CREATED)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_IDE_USER)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_IDE_ACCOUNT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_IDE_AREA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_DES_QUANTITY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_DES_PERIOD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BUD_FH_CREATED)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.BUD_IDE_BUDGET }) |
+            @Html.ActionLink("Details", "Details", new { id=item.BUD_IDE_BUDGET }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.BUD_IDE_BUDGET })
+        </td>
+    </tr>
+}
+
+</table>

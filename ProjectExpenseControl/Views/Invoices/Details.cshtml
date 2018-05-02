@@ -1,0 +1,82 @@
+﻿@model ProjectExpenseControl.Models.Invoice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Invoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_SERIE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_SERIE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_FOLIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_FOLIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_FH_FECHA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_FH_FECHA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_TOTAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_TOTAL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_LUGAR_EXPEDICION)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_LUGAR_EXPEDICION)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_RFC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_EMISOR_RFC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_NOMBRE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_EMISOR_NOMBRE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.INV_DES_UUID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.INV_DES_UUID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.INV_ID_INVOICE }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

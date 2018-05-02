@@ -599,8 +599,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountingAccountsController.cs" />
     <Compile Include="Controllers\AreasController.cs" />
+    <Compile Include="Controllers\BudgetsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\InvoicesController.cs" />
+    <Compile Include="Controllers\RequestsController.cs" />
+    <Compile Include="Controllers\StatusAprovsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomAuthentication\CustomAuthorizeAttribute.cs" />
     <Compile Include="CustomAuthentication\CustomMembership.cs" />
@@ -620,9 +625,19 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountingAccount.cs" />
     <Compile Include="Models\Area.cs" />
+    <Compile Include="Models\Budget.cs" />
+    <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\LoginView.cs" />
+    <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\StatusAprov.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountingAccountRepository.cs" />
     <Compile Include="Services\AreaRepository.cs" />
+    <Compile Include="Services\BudgetRepository.cs" />
+    <Compile Include="Services\InvoicesRepository.cs" />
+    <Compile Include="Services\RequestsRepository.cs" />
+    <Compile Include="Services\StatusAprovRepository.cs" />
+    <Compile Include="Services\UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config">
@@ -643,7 +658,32 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Areas\Create.cshtml" />
     <Content Include="Views\Areas\Index.cshtml" />
-    <Content Include="Views\Account\Crear.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Invoices\Create.cshtml" />
+    <Content Include="Views\Invoices\Delete.cshtml" />
+    <Content Include="Views\Invoices\Details.cshtml" />
+    <Content Include="Views\Invoices\Edit.cshtml" />
+    <Content Include="Views\Invoices\Index.cshtml" />
+    <Content Include="Views\Budgets\Create.cshtml" />
+    <Content Include="Views\Budgets\Delete.cshtml" />
+    <Content Include="Views\Budgets\Details.cshtml" />
+    <Content Include="Views\Budgets\Edit.cshtml" />
+    <Content Include="Views\Budgets\Index.cshtml" />
+    <Content Include="Views\Requests\Create.cshtml" />
+    <Content Include="Views\Requests\Delete.cshtml" />
+    <Content Include="Views\Requests\Details.cshtml" />
+    <Content Include="Views\Requests\Edit.cshtml" />
+    <Content Include="Views\Requests\Index.cshtml" />
+    <Content Include="Views\StatusAprovs\Create.cshtml" />
+    <Content Include="Views\StatusAprovs\Delete.cshtml" />
+    <Content Include="Views\StatusAprovs\Details.cshtml" />
+    <Content Include="Views\StatusAprovs\Edit.cshtml" />
+    <Content Include="Views\StatusAprovs\Index.cshtml" />
+    <Content Include="Views\AccountingAccounts\Create.cshtml" />
+    <Content Include="Views\AccountingAccounts\Delete.cshtml" />
+    <Content Include="Views\AccountingAccounts\Details.cshtml" />
+    <Content Include="Views\AccountingAccounts\Edit.cshtml" />
+    <Content Include="Views\AccountingAccounts\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

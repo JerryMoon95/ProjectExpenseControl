@@ -1,0 +1,26 @@
+﻿@model ProjectExpenseControl.Models.StatusAprov
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>StatusAprov</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.STA_DES_STATUS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STA_DES_STATUS)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.STA_IDE_STATUS_APROV }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

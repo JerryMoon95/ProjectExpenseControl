@@ -1,0 +1,72 @@
+﻿@model ProjectExpenseControl.Models.Budget
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Budget</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_IDE_USER)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_IDE_USER)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_IDE_ACCOUNT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_IDE_ACCOUNT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_IDE_AREA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_IDE_AREA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_DES_QUANTITY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_DES_QUANTITY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_DES_PERIOD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_DES_PERIOD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BUD_FH_CREATED)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BUD_FH_CREATED)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

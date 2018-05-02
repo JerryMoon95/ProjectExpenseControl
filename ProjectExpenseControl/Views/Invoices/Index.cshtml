@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ProjectExpenseControl.Models.Invoice>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_SERIE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_FOLIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_FH_FECHA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_TOTAL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_LUGAR_EXPEDICION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_RFC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_NOMBRE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.INV_DES_UUID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_SERIE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_FOLIO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_FH_FECHA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_TOTAL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_LUGAR_EXPEDICION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_EMISOR_RFC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_EMISOR_NOMBRE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.INV_DES_UUID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.INV_ID_INVOICE }) |
+            @Html.ActionLink("Details", "Details", new { id=item.INV_ID_INVOICE }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.INV_ID_INVOICE })
+        </td>
+    </tr>
+}
+
+</table>

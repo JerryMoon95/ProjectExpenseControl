@@ -9,7 +9,8 @@ namespace ProjectExpenseControl.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;//TODO: poner en false
+            AutomaticMigrationDataLossAllowed = true; //TODO: Poner en false
         }
 
         protected override void Seed(ProjectExpenseControl.DataAccess.AuthenticationDB context)

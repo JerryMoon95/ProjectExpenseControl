@@ -14,7 +14,7 @@ namespace ProjectExpenseControl.Services
         {
             using (AuthenticationDB db = new AuthenticationDB())
             {
-                return db.Area.ToList();
+                return db.Areas.ToList();
             }
         }
                 
@@ -23,7 +23,7 @@ namespace ProjectExpenseControl.Services
             using (AuthenticationDB db = new AuthenticationDB())
             {
                 List<SelectListItem> selectListItems = new List<SelectListItem>();
-                foreach (Area area in db.Area.ToList())
+                foreach (Area area in db.Areas.ToList())
                 {
                     selectListItems.Add(new SelectListItem()
                     {
@@ -39,7 +39,7 @@ namespace ProjectExpenseControl.Services
         {
             using(AuthenticationDB db = new AuthenticationDB())
             {
-                db.Area.Add(model);
+                db.Areas.Add(model);
                 db.SaveChanges();
             }
         }
