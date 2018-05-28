@@ -9,25 +9,103 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ACC_DES_ACCOUNT)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ACC_DES_ACCOUNT)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ACC_IDE_ACCOUNT }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ACC_IDE_ACCOUNT }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ACC_IDE_ACCOUNT })
-        </td>
-    </tr>
+@Html.Partial("_LayoutBottonsExportData")
+
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'ACC_IDE_ACCOUNT', type: 'string' },
+                        { name: 'ACC_DES_ACCOUNT', type: 'string' },
+                        { name: 'ACC_FH_CREATED', type: 'date' },
+                    ],
+                    id: 'ACC_IDE_ACCOUNT',
+                    url: '/AccountingAccounts/GetAccountinAccounts'
+                };
+
+            var editar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Areas/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var detalle = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Areas/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var borrar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Areas/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#grid").jqxGrid(
+                {
+                    width: 940,
+                    source: dataAdapter,
+                    theme: 'darkblue',
+                    pageSize: 10,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columnsresize: true,
+                    autoshowfiltericon: false,
+                    columns: [
+                        { text: '', cellsrenderer: editar, width: 20, align: 'center' },
+                        { text: '', cellsrenderer: detalle, width: 20, align: 'center' },
+                        { text: '', cellsrenderer: borrar, width: 20, align: 'center' },
+                        { text: 'Cuenta Contable', dataField: 'ACC_IDE_ACCOUNT', width: 130 },
+                        { text: 'Descripción de la Cuenta', dataField: 'ACC_DES_ACCOUNT', width: 430 },
+                        { text: 'Fecha de Creación', dataField: 'ACC_FH_CREATED', cellsformat:'d'  },
+                    ]
+                });
+            $("#excelExport").jqxButton();
+            $("#xmlExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#htmlExport").jqxButton();
+            $("#jsonExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');
+            });
+            $("#xmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xml', 'jqxGrid');
+            });
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+
+            $("#htmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'html', 'jqxGrid');
+            });
+            $("#jsonExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'json', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+        });
+    </script>
 }
 
-</table>
+
+
+

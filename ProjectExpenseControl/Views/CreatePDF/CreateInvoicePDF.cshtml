@@ -1,0 +1,246 @@
+﻿
+@{
+    ViewBag.Title = "CreateInvoicePDF";
+    Layout = "~/Views/Shared/_LayoutInvoice.cshtml";
+}
+
+<div class="container">
+    @if (!ViewBag.PDF)
+    {
+        @Html.ActionLink("Generar PDF", "PrintAllReport")
+    }
+
+    <div class="row">
+        <hr />
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-3 pull-left">
+                    <div id="logo">
+                        <img class="img-responsive" alt="Invoce Template" src="~/Images/logo.png" />
+                    </div>
+                </div>
+
+                <div class="col-xs-4 height">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Información del Timbre Fiscal Digital</div>
+                        <div class="panel-body">
+                            <strong>Fecha de Emisión: </strong><br />@Model.Fecha<br>
+                            <strong>Fecha de Certificación: </strong><br />@Model.TimbreFiscalDigital.FechaTimbrado<br>
+                            <strong>CSD del Emisor: </strong><br />@Model.NoCertificado<br>
+                            <strong>CSD del SAT: </strong><br />@Model.TimbreFiscalDigital.NoCertificadoSAT<br />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-5  pull-right height">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading text-center">Factura</div>
+                        <div class="panel-body">
+                            <h4><strong>Folio Interno: </strong><br />@Model.Serie @Model.Folio<br></h4>
+                            <strong>Folio Fiscal: </strong><br />@Model.TimbreFiscalDigital.UUID<br>
+                            <strong>Tipó de Comprobante: </strong>@Model.TipoDeComprobante<br>
+                            <strong>Expedido en: </strong>@Model.LugarExpedicion<br><br />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-4 pull-left">
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">Datos del Emisor</div>
+                        <div class="panel-body">
+                            @Model.Emisor.Nombre <br />
+                            <strong>RFC: </strong>@Model.Emisor.Rfc<br>
+                            <strong>Régimen Fiscal: </strong>@Model.Emisor.RegimenFiscal<br><br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Datos del Receptor</div>
+                        <div class="panel-body">
+                            @Model.Receptor.Nombre<br>
+                            <strong>RFC: </strong>@Model.Receptor.Rfc<br>
+                            <strong>Uso CFDI: </strong>@Model.Receptor.UsoCFDI<br><br />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4 pull-right">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Forma de Pago</div>
+                        <div class="panel-body">
+                            <strong>Forma de Pago: </strong>@Model.FormaPago<br>
+                            <strong>Método de Pago: </strong>@Model.MetodoPago<br>
+                            <strong>Moneda: </strong>@Model.Moneda<br>
+                            <strong>Tipo de Cambio: </strong>@Model.TipoCambio<br>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4 class="text-center"><strong>Resumen de Orden</strong></h4>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td class="text-center"><strong>Código</strong></td>
+                                <td class="text-center"><strong>Clave Prod/Servicio</strong></td>
+                                <td class="text-center"><strong>Cantidad</strong></td>
+                                <td class="text-center"><strong>Clave Unidad</strong></td>
+                                <td class="text-center"><strong>Unidad</strong></td>
+                                <td class="text-center"><strong>Descripción</strong></td>
+                                <td class="text-right"><strong>Valor Unitario</strong></td>
+                                <td class="text-right"><strong>Importe</strong></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var oConcepto in Model.Conceptos)
+                            {
+                                <tr>
+                                    <td class="text-center">@oConcepto.NoIdentificacion</td>
+                                    <td class="text-center">@oConcepto.ClaveProdServ</td>
+                                    <td class="text-center">@oConcepto.Cantidad</td>
+                                    <td class="text-center">@(oConcepto.ClaveUnidad + "-" + oConcepto.Unidad)</td>
+                                    <td class="text-center">@oConcepto.Unidad</td>
+                                    <td>@oConcepto.Descripcion</td>
+                                    <td class="text-right">@string.Format("{0:N}", oConcepto.ValorUnitario)</td>
+                                    <td class="text-right">@string.Format("{0:N}", (oConcepto.Cantidad * oConcepto.ValorUnitario))</td>
+                                </tr>
+                            }
+                            <tr>
+                                <td class="highrow"></td>
+                                <td class="highrow"></td>
+                                <td class="highrow"></td>
+                                <td class="highrow"></td>
+                                <td class="highrow"></td>
+                                @*<td class="highrow"></td>*@
+                                <td class="highrow text-right" colspan="2"><strong>Subtotal</strong></td>
+                                <td class="highrow text-right">@string.Format("{0:N}", Model.SubTotal)</td>
+                            </tr>
+                            <tr>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                @*<td class="emptyrow"></td>*@
+                                <td class="emptyrow text-right" colspan="2"><strong>Total de Descuentos</strong></td>
+                                <td class="emptyrow text-right">@string.Format("{0:N}", Model.Descuento)</td>
+                            </tr>
+                            <tr>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                @*<td class="emptyrow"></td>*@
+                                <td class="emptyrow text-right" colspan="2"><strong>Total Impuestos Trasladados</strong></td>
+                                <td class="emptyrow text-right">@string.Format("{0:N}", Model.Impuestos.TotalImpuestosTrasladados)</td>
+                            </tr>
+                            <tr>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                @*<td class="emptyrow"></td>*@
+                                <td class="emptyrow text-right" colspan="2"><strong>Total Impuestos Retenidos</strong></td>
+                                <td class="emptyrow text-right">@string.Format("{0:N}", Model.Impuestos.TotalImpuestosRetenidos)</td>
+                            </tr>
+                            <tr>
+                                <td class="emptyrow"><i class="fa fa-barcode iconbig"></i></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow"></td>
+                                @*<td class="emptyrow"></td>*@
+                                <td class="emptyrow text-right" colspan="2"><strong>Total</strong></td>
+                                <td class="emptyrow text-right">@string.Format("{0:C}", Model.Total)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table border="1" >
+        <tr>
+            <td colspan="2">
+                <strong>Importe con Letra: </strong>@Model.MonedaLetra
+            </td>
+        </tr>
+        <tr style="font-size:10px;">
+            <td>
+                <img src="@Model.QR" width="150" height="150" />
+            </td>
+            <td>
+                <div class="textoContiguo">
+                    <strong>Cadena Original del Timbre: </strong><br />
+                    @("||" + Model.TimbreFiscalDigital.Version + "|" + Model.TimbreFiscalDigital.FechaTimbrado
+                                        + "|" + Model.TimbreFiscalDigital.RfcProvCertif + "|" + Model.TimbreFiscalDigital.SelloCFD
+                                        + "|" + Model.TimbreFiscalDigital.NoCertificadoSAT + "||")
+                    <br />
+                </div>
+                <div class="textoContiguo">
+                    <strongb>Sello digital del Emisor: </strongb><br />
+                    @Model.TimbreFiscalDigital.SelloCFD<br />
+                </div>
+                <div class="textoContiguo">
+                    <strong>Sello digital del SAT: </strong><br />
+                    @Model.TimbreFiscalDigital.SelloSAT<br />
+                </div>
+                <strong>RFC del proveedor de certificación: </strong>
+                @Model.TimbreFiscalDigital.RfcProvCertif<br />
+            </td>
+        </tr>
+    </table>
+</div>
+
+<style>
+    .height {
+        min-height: 200px;
+    }
+
+    .icon {
+        font-size: 47px;
+        color: #5CB85C;
+    }
+
+    .iconbig {
+        font-size: 77px;
+        color: #5CB85C;
+    }
+
+    .table > tbody > tr > .emptyrow {
+        border-top: none;
+    }
+
+    .table > thead > tr > .emptyrow {
+        border-bottom: none;
+    }
+
+    .table > tbody > tr > .highrow {
+        border-top: 3px solid;
+    }
+
+    .textoContiguo {
+        -ms-word-break: break-all;
+        word-break: break-all;
+        word-break: break-word;
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+    }
+</style>

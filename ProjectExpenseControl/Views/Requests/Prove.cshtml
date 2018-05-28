@@ -1,0 +1,75 @@
+﻿@model ProjectExpenseControl.Models.Request
+
+@{
+    ViewBag.Title = "Prove";
+}
+
+<h2>Prove</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Request</h4>
+        <hr />
+        <div>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_IDE_USER)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_IDE_USER)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_DES_TYPE_GASTO)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_DES_TYPE_GASTO)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_DES_CONCEPT)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_DES_CONCEPT)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_DES_QUANTITY)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_DES_QUANTITY)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_DES_OBSERVATIONS)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_DES_OBSERVATIONS)
+                </dd>
+            </dl>
+        </div>
+
+
+        @using(Html.BeginForm("UploadFile","Invoices", FormMethod.Post, new { enctype="multipart/form-data"}))  
+        {  
+            <div>  
+                @Html.TextBox("file", "", new {  type= "file"}) <br />  
+                <input type="submit" value="Upload" />  
+                @ViewBag.Message  
+            </div>  
+        }  
+                
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
