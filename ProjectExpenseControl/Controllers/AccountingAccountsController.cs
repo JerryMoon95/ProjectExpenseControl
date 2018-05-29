@@ -1,7 +1,9 @@
 ﻿using ProjectExpenseControl.CustomAuthentication;
+using ProjectExpenseControl.DataAccess;
 using ProjectExpenseControl.Models;
 using ProjectExpenseControl.Services;
 using System;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -124,5 +126,19 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+        public JsonResult GetAccountinAccounts()
+        {
+            AuthenticationDB db = new AuthenticationDB();
+            var dbResult = db.AccountingAccounts.ToList();
+            var accounts = (from account in dbResult
+                         select new
+                         {
+                             account.ACC_IDE_ACCOUNT,
+                             account.ACC_DES_ACCOUNT,
+                             account.ACC_FH_CREATED
+                         });
+            return Json(accounts, JsonRequestBehavior.AllowGet);
+        }
     }
 }

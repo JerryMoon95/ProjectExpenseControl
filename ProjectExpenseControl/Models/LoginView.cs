@@ -15,7 +15,7 @@ namespace ProjectExpenseControl.Models
         public string Email { get; set; }
         [Required]
         [Display(Name = "CONTRASEÑA")]
-        //[DataType(DataType.Password)]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         [Display(Name = "RECORDARME")]
         public bool RememberMe { get; set; }

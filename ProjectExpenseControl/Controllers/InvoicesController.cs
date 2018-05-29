@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using ProjectExpenseControl.CustomAuthentication;
+using ProjectExpenseControl.Models;
+using ProjectExpenseControl.Services;
+using System;
+using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ProjectExpenseControl.CustomAuthentication;
-using ProjectExpenseControl.DataAccess;
-using ProjectExpenseControl.Models;
-using ProjectExpenseControl.Services;
 
 namespace ProjectExpenseControl.Controllers
 {
@@ -131,5 +127,26 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+        public ActionResult UploadFile(HttpPostedFileBase file)
+        {
+            try
+            {
+                if (file.ContentLength > 0)
+                {
+                    string _FileName = Path.GetFileName(file.FileName);
+                    string _Path = Path.Combine(Server.MapPath("~/Xml"), _FileName);
+                    file.SaveAs(_Path);
+                }
+                ViewBag.Message = "El Archivo se Cargó Correctamente";
+                return View();
+            }
+            catch
+            {
+                ViewBag.Message = "La Caraga de Archivo Falló";
+                return View();
+            }
+        }
+
     }
 }

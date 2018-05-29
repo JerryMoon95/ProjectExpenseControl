@@ -141,5 +141,34 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+        public ActionResult Prove(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Request request = db.GetOne(id);
+            if (request == null)
+            {
+                return HttpNotFound();
+            }
+            return View(request);
+        }
+
+        // POST: Requests/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Prove([Bind(Include = "REQ_IDE_REQUEST,REQ_IDE_USER,REQ_IDE_AREA,REQ_DES_TYPE_GASTO,REQ_DES_CONCEPT,REQ_DES_QUANTITY,REQ_DES_OBSERVATIONS,REQ_IDE_STATUS_APROV,REQ_FH_CREATED")] Request request)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (db.Update(request))
+        //            return RedirectToAction("Index");
+        //    }
+        //    return View(request);
+        //}
     }
 }
