@@ -14,9 +14,6 @@
         <th>
             @Html.DisplayNameFor(model => model.REQ_IDE_USER)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model..REQ_IDE_AREA)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.REQ_DES_TYPE_GASTO)
         </th>
@@ -38,14 +35,12 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.REQ_IDE_USER)
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.REQ_IDE_AREA)
-        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.REQ_DES_TYPE_GASTO)
         </td>
@@ -59,16 +54,85 @@
             @Html.DisplayFor(modelItem => item.REQ_DES_OBSERVATIONS)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.REQ_IDE_STATUS_APROV)
+            @*@Html.DisplayFor(modelItem => item.REQ_IDE_STATUS_APROV)*@
+            @{
+                switch (item.REQ_IDE_STATUS_APROV)
+                {
+                    case 5:
+                        @:Solicitud por Aprobar
+                        break;
+                    case 6:
+                        @:Solicitud Rechazada
+                        break;
+                    case 7:
+                        @:Solicitud Aprobada
+                        break;
+                    case 8:
+                        @:Solicitud por Comprobar
+                        break;
+                    case 9:
+                        @:Solicitud Comprobada
+                        break;
+                    case 10:
+                        @:Solicitud Comprobada Rechazada
+                        break;
+                    case 11:
+                        @:Solicitud por Aprobar CXP
+                        break;
+                    case 12:
+                        @:Solicitud Rechazada CXP
+                        break;
+                    case 13:
+                        @:Solicitud Aprobada CXP
+                        break;
+
+                }
+            }
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.REQ_FH_CREATED)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.REQ_IDE_REQUEST }) |
             @Html.ActionLink("Details", "Details", new { id = item.REQ_IDE_REQUEST }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.REQ_IDE_REQUEST }) |
-            @Html.ActionLink("Comprobar", "Prove", new { id = item.REQ_IDE_REQUEST }) |
+            @{ 
+                switch (item.REQ_IDE_STATUS_APROV)
+                {
+                    case 5:
+                        @:Solicitud por Aprobar |
+                        break;
+                    case 6:
+                        @:Solicitud Rechazada |
+                        break;
+                    case 7:
+                        @:Solicitud Aprobada |
+                        break;
+                    case 8:
+                        @Html.ActionLink("Edit", "Edit", new { id = item.REQ_IDE_REQUEST }) @:|
+                        @Html.ActionLink("Comprobar", "Prove", new { id = item.REQ_IDE_REQUEST })
+                        break;
+                    case 9:
+                        @:Solicitud Comprobada |
+                        break;
+                    case 10:
+                        @:Solicitud Comprobada Rechazada |
+                        break;
+                    case 11:
+                        @:Solicitud por Aprobar CXP |
+                        break;
+                    case 12:
+                        @:Solicitud Rechazada CXP |
+                        break;
+                    case 13:
+                        @:Solicitud Aprobada CXP |
+                        break;
+
+                }
+            }
+            
+            
+            @*@Html.ActionLink("Delete", "Delete", new { id = item.REQ_IDE_REQUEST }) |*@
+            
         </td>
     </tr>
 }

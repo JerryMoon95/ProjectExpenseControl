@@ -3,6 +3,7 @@ using ProjectExpenseControl.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -79,5 +80,27 @@ namespace ProjectExpenseControl.Services
             }
             return false;
         }
+            
+        public List<Request> GetWithFilter(int? UserId, int? Option)
+        {
+            if (UserId != null && Option != null)
+            {
+                using (AuthenticationDB db = new AuthenticationDB())
+                {
+
+                    var rows = db.Database.SqlQuery<Request>(ResourceSQL.SP_GetRequests,
+                        new SqlParameter("@IDE_USER", UserId),
+                        new SqlParameter("@TYPE_USER", Option)
+                    ).ToList();
+
+
+                    return rows;
+                }
+            }
+            
+
+            return null;
+        }
     }
+
 }

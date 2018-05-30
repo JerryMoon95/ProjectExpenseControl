@@ -13,7 +13,7 @@ using ProjectExpenseControl.Services;
 
 namespace ProjectExpenseControl.Controllers
 {
-    [CustomAuthorize(Roles = "Administrador, JefeArea, Usuario")]
+    [CustomAuthorize(Roles = "Administrador, JefeArea, Usuario, CuentasXPagar")]
     public class RequestsController : Controller
     {
         private RequestsRepository db;
@@ -25,7 +25,34 @@ namespace ProjectExpenseControl.Controllers
         // GET: Requests
         public ActionResult Index()
         {
-            return View(db.GetAll());
+            CustomSerializeModel user = (CustomSerializeModel)Session["user"];
+            if (user != null)
+            {
+                int option = 0;
+                
+                switch (user.RoleName[0]) {
+                    case "Administrador":
+                        option = 1;
+                        ViewBag.typeUser = option;
+                        return View(db.GetAll());
+                    case "Usuario":
+                        option = 2;
+                        break;
+                    case "JefeArea":
+                        option = 3;
+                        break;
+                    case "CuentasXPagar":
+                        option = 4;
+                        break;
+                    default:
+                        return RedirectToAction("Logout", "Account");
+                }
+                var requests = db.GetWithFilter(user.UserId, option);
+
+                ViewBag.Option = option;
+                return View(requests);
+            }
+            return RedirectToAction("Logout", "Account");
         }
 
         // GET: Requests/Details/5
@@ -64,7 +91,7 @@ namespace ProjectExpenseControl.Controllers
                 {
                     request.REQ_FH_CREATED = DateTime.Now;
                     request.REQ_IDE_USER = user.UserId;
-                    request.REQ_IDE_STATUS_APROV = 0;
+                    request.REQ_IDE_STATUS_APROV = 8;
                     if (db.Create(request))
                         return RedirectToAction("Index");
                 }

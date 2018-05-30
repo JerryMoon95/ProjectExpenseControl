@@ -27,7 +27,6 @@ namespace ProjectExpenseControl.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<string> RoleName { get; set; }
-
     }
 
     public class RegistrationView

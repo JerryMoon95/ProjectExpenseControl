@@ -24,30 +24,58 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    @{
+                    ProjectExpenseControl.Models.CustomSerializeModel user = (ProjectExpenseControl.Models.CustomSerializeModel)Session["user"];
+                    if (user != null)
+                    {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catálogos<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
-                            <li>@Html.ActionLink("Areas", "Index", "Areas")</li>
-                            <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
-                            <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
-                            <li>@Html.ActionLink("Solicitudes", "Index", "Requests")</li>
-                            <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
-                            <li>@Html.ActionLink("Estados de aprovación", "Index", "StatusAprovs")</li>
-                            <li>@Html.ActionLink("Usuarios", "Index", "User")</li>
-                            <li>@Html.ActionLink("Permisos a usuarios**", "Index", "UserRoles")</li>
-                            <li role="separator" class="divider"></li>
-                        </ul>
+
+                            <ul class="dropdown-menu">
+                                @if (user.RoleName[0] == "Administrador")
+                                {
+
+                                    <li>@Html.ActionLink("Areas", "Index", "Areas")</li>
+                                    <li>@Html.ActionLink("Estados de aprovación", "Index", "StatusAprovs")</li>
+                                    <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                                    <li>@Html.ActionLink("Usuarios", "Index", "User")</li>
+                                    <li role="separator" class="divider"></li>
+                                } else if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "JefeArea")
+                                {
+                                    <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
+                                    <li role="separator" class="divider"></li>
+
+                                } else if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "CuentasXPagar")
+                                {
+
+                                    <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
+                                    <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
+                                    <li role="separator" class="divider"></li>
+                                }
+                                <li>@Html.ActionLink("Solicitudes", "Index", "Requests")</li>
+                                <li role="separator" class="divider"></li>
+                             </ul>
                     </li>
+                    }
+                    }
+
+                    
                 </ul>
-                <form class="navbar-form navbar-left">
+                @*<form class="navbar-form navbar-left">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search">
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
-                </form>
+                </form>*@
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Cerrar sesión", "Logout", "Account")</li>
+                    @{ 
+                        
+                        if (user != null)
+                        {
+                            <li><a disabled>Hola @user.FirstName!</a></li>
+                            <li>@Html.ActionLink("Cerrar sesión", "Logout", "Account")</li>
+                        }
+                    }
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
