@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<ProjectExpenseControl.Models.Request>
 
 @{
-    ViewBag.Title = "Index";
+    ProjectExpenseControl.Models.CustomSerializeModel user = (ProjectExpenseControl.Models.CustomSerializeModel)Session["user"];
+    ViewBag.Title = "Todas las solicitudes";
 }
 
-<h2>Index</h2>
+<h2>Todas las solicitudes</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -14,9 +15,6 @@
         <th>
             @Html.DisplayNameFor(model => model.REQ_IDE_USER)
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model..REQ_IDE_AREA)
-        </th>*@
         <th>
             @Html.DisplayNameFor(model => model.REQ_DES_TYPE_GASTO)
         </th>
@@ -38,14 +36,24 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.REQ_IDE_USER)
+            @if(user.UserId == item.REQ_IDE_USER)
+            {
+                @:Yo
+            }
+            else
+            {
+                ProjectExpenseControl.Services.UserRepository u = new ProjectExpenseControl.Services.UserRepository();
+                ProjectExpenseControl.DataAccess.User User = u.GetOne(item.REQ_IDE_USER);
+                @: @(User.USR_DES_NAME + " " + User.USR_DES_FIRST_NAME)
+
+            }
+
+            @*@Html.DisplayFor(modelItem => item.REQ_IDE_USER)*@
         </td>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.REQ_IDE_AREA)
-        </td>*@
         <td>
             @Html.DisplayFor(modelItem => item.REQ_DES_TYPE_GASTO)
         </td>
@@ -59,16 +67,145 @@
             @Html.DisplayFor(modelItem => item.REQ_DES_OBSERVATIONS)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.REQ_IDE_STATUS_APROV)
+            @*@Html.DisplayFor(modelItem => item.REQ_IDE_STATUS_APROV)*@
+            @{
+                switch (item.REQ_IDE_STATUS_APROV)
+                {
+                    case 5:
+                        @:Solicitud por Aprobar
+                        break;
+                    case 6:
+                        @:Solicitud Rechazada
+                        break;
+                    case 7:
+                        @:Solicitud Aprobada
+                        break;
+                    case 8:
+                        @:Solicitud por Comprobar
+                        break;
+                    case 9:
+                        @:Solicitud Comprobada
+                        break;
+                    case 10:
+                        @:Solicitud Comprobada Rechazada
+                        break;
+                    case 11:
+                        @:Solicitud por Aprobar CXP
+                        break;
+                    case 12:
+                        @:Solicitud Rechazada CXP
+                        break;
+                    case 13:
+                        @:Solicitud Aprobada CXP
+                        break;
+
+                }
+            }
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.REQ_FH_CREATED)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.REQ_IDE_REQUEST }) |
-            @Html.ActionLink("Details", "Details", new { id = item.REQ_IDE_REQUEST }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.REQ_IDE_REQUEST }) |
-            @Html.ActionLink("Comprobar", "Prove", new { id = item.REQ_IDE_REQUEST }) |
+            @{ 
+                switch (item.REQ_IDE_STATUS_APROV)
+                {
+                    case 5:
+                        if (user.RoleName[0] == "JefeArea")
+                        {
+                            @Html.ActionLink("Aprobar", "Approve", new { id = item.REQ_IDE_REQUEST, type = 1 }, new { @class = "text-success" }) @:|
+                            @Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) @:|
+                            @Html.ActionLink("Rechazar", "Reject", new { id = item.REQ_IDE_REQUEST, type = 1 }, new { @class = "text-danger" }) @:|
+                        }
+                        else if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
+                        {
+                            @:Solicitud por Aprobar |
+                        }
+                        break;
+                    case 6:
+                        if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
+                        {
+                            @:Solicitud Rechazada |
+                            @Html.ActionLink("Editar Solicitud", "Edit", new { id = item.REQ_IDE_REQUEST }) @:|
+                        }
+                        break;
+                    case 7:
+                        if (user.RoleName[0] == "Usuario")
+                        {
+                            @Html.ActionLink("Comprobar", "Prove", new { id = item.REQ_IDE_REQUEST }) @:|
+
+                        }
+                        else if (user.RoleName[0] == "Administrador")
+                        {
+                            
+                            @:Solicitud Aprobada |
+                        }
+                        break;
+                    case 8:
+                        if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
+                        {
+                            @:Solicitud por Comprobar |
+
+                        }
+                        else if (user.RoleName[0] == "JefeArea")
+                        {
+                            @Html.ActionLink("Aprobar", "Approve", new { id = item.REQ_IDE_REQUEST, type = 2 }, new { @class = "text-success" }) @:|
+                            @Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) @:|
+                            @Html.ActionLink("Rechazar", "Reject", new { id = item.REQ_IDE_REQUEST, type = 2 }, new { @class = "text-danger" }) @:|
+                        }
+                        break;
+                    case 9:
+                        if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
+                        {
+                            @:Solicitud por Aprobar CXP |
+                            @* Comprobada *@
+                        }
+
+                        break;
+                    case 10:
+                        if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
+                        {
+                            @:Solicitud Comprobada Rechazada |
+                            @Html.ActionLink("Modificar XML", "Prove", new { id = item.REQ_IDE_REQUEST }) @:|
+                        }
+
+                        break;
+                    case 11:
+                        if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "Usuario")
+                        {
+                            @:Solicitud por Aprobar CXP |
+
+                        }
+                        else if ( user.RoleName[0] == "CuentasXPagar")
+                        {
+                            @Html.ActionLink("Aprobar", "ApproveCXP", new { id = item.REQ_IDE_REQUEST }, new { @class = "text-success" }) @:|
+                            @Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) @:|
+                            @Html.ActionLink("Rechazar", "RejectCXP", new { id = item.REQ_IDE_REQUEST }, new { @class = "text-danger" }) @:|
+                        }
+                        
+                        break;
+                    case 12:
+                        if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "Usuario")
+                        {
+                            @:Solicitud Rechazada CXP |
+
+                        }
+                        
+                        break;
+                    case 13:
+                        if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "Usuario")
+                        {
+                            @:Solicitud Aprobada CXP |
+                        }
+                        break;
+
+                }
+            }
+            
+            
+            @*@Html.ActionLink("Delete", "Delete", new { id = item.REQ_IDE_REQUEST }) |*@
+            @*@Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) |*@
+            
         </td>
     </tr>
 }

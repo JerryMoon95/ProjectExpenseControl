@@ -121,6 +121,9 @@
   <data name="Create_SP_DeleteUserRemoveRole" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>migrations\sql\create_sp_deleteuserremoverole.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="Create_SP_GetRequests" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>migrations\sql\create_sp_getrequests.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="Create_SP_InsertUserAddRoleDefault" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>migrations\sql\create_sp_insertuseraddroledefault.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
@@ -129,6 +132,9 @@
   </data>
   <data name="SP_DeleteUserRemoveRole" xml:space="preserve">
     <value>[DBO].[SP_DeleteUserRemoveRole] @USR_IDE_USER</value>
+  </data>
+  <data name="SP_GetRequests" xml:space="preserve">
+    <value>[dbo].[SP_GetRequests] @IDE_USER, @TYPE_USER</value>
   </data>
   <data name="SP_InsertUserAddRoleDefault" xml:space="preserve">
     <value>[dbo].[SP_InsertUserAddRoleDefault] @USR_IDE_AREA, @USR_DES_POSITION, @USR_DES_NAME, @USR_DES_FIRST_NAME, @USR_DES_LAST_NAME,    @USR_DES_PASSWORD, @USR_DES_PHONE,  @USR_DES_EMAIL,  @USR_FH_CREATED</value>

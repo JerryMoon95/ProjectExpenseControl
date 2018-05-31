@@ -1,13 +1,14 @@
 ﻿@model ProjectExpenseControl.Models.Request
 
 @{
+    ProjectExpenseControl.Models.CustomSerializeModel user = (ProjectExpenseControl.Models.CustomSerializeModel)Session["user"];
     ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
 
 <div>
-    <h4>Request</h4>
+    <h4>Solicitud número @Model.REQ_IDE_REQUEST</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -15,15 +16,17 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.REQ_IDE_USER)
-        </dd>
+            @if(user.UserId == Model.REQ_IDE_USER)
+            {
+                @:Yo
+            }
+            else
+            {
+                ProjectExpenseControl.Services.UserRepository u = new ProjectExpenseControl.Services.UserRepository();
+                ProjectExpenseControl.DataAccess.User User = u.GetOne(Model.REQ_IDE_USER);
+                @: @(User.USR_DES_NAME + " " + User.USR_DES_FIRST_NAME);
 
-        <dt>
-            @Html.DisplayNameFor(model => model.REQ_IDE_AREA)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.REQ_IDE_AREA)
+            }
         </dd>
 
         <dt>
@@ -77,6 +80,5 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.REQ_IDE_REQUEST }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

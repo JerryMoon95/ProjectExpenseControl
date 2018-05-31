@@ -9,6 +9,7 @@ namespace ProjectExpenseControl.Migrations
         {
             Sql(ResourceSQL.Create_SP_DeleteUserRemoveRole);
             Sql(ResourceSQL.Create_SP_InsertUserAddRoleDefault);
+            Sql(ResourceSQL.Create_SP_GetRequests);
         }
         
         public override void Down()

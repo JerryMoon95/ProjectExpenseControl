@@ -476,6 +476,7 @@
     <Content Include="Migrations\SQL\DROP_SP.sql" />
     <Content Include="Migrations\SQL\Create_SP_InsertUserAddRoleDefault.sql" />
     <Content Include="Migrations\SQL\Create_SP_DeleteUserRemoveRole.sql" />
+    <Content Include="Migrations\SQL\Create_SP_GetRequests.sql" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

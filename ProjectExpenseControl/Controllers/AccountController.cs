@@ -181,6 +181,7 @@ namespace ProjectExpenseControl.Controllers
             HttpCookie cookie = new HttpCookie("Cookie1", "");
             cookie.Expires = DateTime.Now.AddYears(-1);
             Response.Cookies.Add(cookie);
+            Session["User"] = null;
 
             FormsAuthentication.SignOut();
             return RedirectToAction("Login", "Account", null);

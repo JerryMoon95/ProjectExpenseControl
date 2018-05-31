@@ -65,7 +65,7 @@ namespace ProjectExpenseControl {
         ///	Este store sirve para ingresar un usuario y proporcionarle el permiso por
         ///	defecto de Usuario
         ///	*/
-        ///USE DBProgramExpenses
+        ///USE DB_A39AAA_net
         ///if exists (select * from dbo.sysobjects where id = object_id(&apos;SP_DeleteUserRemoveRole&apos;) and OBJECTPROPERTY(id, N&apos;IsProcedure&apos;) = 1)
         ///drop procedure [dbo].SP_DeleteUserRemoveRole
         ///GO
@@ -77,7 +77,7 @@ namespace ProjectExpenseControl {
         ///
         ///	BEGIN TRY		
         ///		BEGIN TRAN
-        ///			DELETE FROM Users WHERE USR_IDE_USER = @USR_IDE_U [rest of string was truncated]&quot;;.
+        ///			DELETE FROM Users WHERE USR_IDE_USER = @USR_IDE_USER        /// [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Create_SP_DeleteUserRemoveRole {
             get {
@@ -86,11 +86,40 @@ namespace ProjectExpenseControl {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to USE DB_A39AAA_net
+        ///if exists (select * from dbo.sysobjects where id = object_id(&apos;SP_GetRequests&apos;) and OBJECTPROPERTY(id, N&apos;IsProcedure&apos;) = 1)
+        ///drop procedure [dbo].SP_GetRequests
+        ///GO
+        ///	CREATE PROCEDURE SP_GetRequests	
+        ///			@IDE_USER int ,
+        ///			@TYPE_USER int
+        ///
+        ///AS
+        ///
+        ///BEGIN
+        ///	DECLARE @ErrorMessage varchar(max),
+        ///					@Permission varchar(4)
+        ///	DECLARE @temp TABLE(permission int NOT NULL)
+        ///
+        ///	IF  @TYPE_USER =	1 
+        ///	BEGIN 
+        ///		INSERT INTO @temp  select STA_IDE_STATUS_APROV from StatusAprovs
+        ///	END
+        ///
+        ///	IF  ( @TYPE_USE [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Create_SP_GetRequests {
+            get {
+                return ResourceManager.GetString("Create_SP_GetRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 	/*
         ///	Este store sirve para ingresar un usuario y proporcionarle el permiso por
         ///	defecto de Usuario
         ///	*/
-        ///USE DBProgramExpenses
+        ///USE DB_A39AAA_net
         ///if exists (select * from dbo.sysobjects where id = object_id(&apos;SP_InsertUserAddRoleDefault&apos;) and OBJECTPROPERTY(id, N&apos;IsProcedure&apos;) = 1)
         ///drop procedure [dbo].SP_InsertUserAddRoleDefault
         ///GO
@@ -99,7 +128,7 @@ namespace ProjectExpenseControl {
         ///			@USR_DES_POSITION nvarchar(60),
         ///			@USR_DES_NAME nvarchar(100),
         ///			@USR_DES_FIRST_NAME nvarchar(60),
-        ///			 [rest of string was truncated]&quot;;.
+        ///			@USR [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Create_SP_InsertUserAddRoleDefault {
             get {
@@ -123,6 +152,15 @@ namespace ProjectExpenseControl {
         internal static string SP_DeleteUserRemoveRole {
             get {
                 return ResourceManager.GetString("SP_DeleteUserRemoveRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [dbo].[SP_GetRequests] @IDE_USER, @TYPE_USER.
+        /// </summary>
+        internal static string SP_GetRequests {
+            get {
+                return ResourceManager.GetString("SP_GetRequests", resourceCulture);
             }
         }
         
