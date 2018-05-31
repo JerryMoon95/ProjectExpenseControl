@@ -18,7 +18,7 @@ BEGIN
 		INSERT INTO @temp  select STA_IDE_STATUS_APROV from StatusAprovs
 	END
 
-	IF  ( @TYPE_USER =3 OR @TYPE_USER =	2 )
+	IF  (@TYPE_USER =	2 )
 	BEGIN 
 		INSERT INTO @temp  values(5)
 		INSERT INTO @temp  values(6)
@@ -26,12 +26,18 @@ BEGIN
 		INSERT INTO @temp  values(8)
 		INSERT INTO @temp  values(9)
 		INSERT INTO @temp  values(10)
+		INSERT INTO @temp  values(11)
+		INSERT INTO @temp  values(12)
+		INSERT INTO @temp  values(13)
+	END
+	IF  @TYPE_USER =3 
+	BEGIN
+		INSERT INTO @temp  values(5)
+		INSERT INTO @temp  values(8)
 	END
 	IF  @TYPE_USER =	4 
 	BEGIN 
 		INSERT INTO @temp  values(11)
-		INSERT INTO @temp  values(12)
-		INSERT INTO @temp  values(13)
 	END
 
 	

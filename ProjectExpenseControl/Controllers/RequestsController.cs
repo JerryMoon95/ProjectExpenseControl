@@ -91,7 +91,7 @@ namespace ProjectExpenseControl.Controllers
                 {
                     request.REQ_FH_CREATED = DateTime.Now;
                     request.REQ_IDE_USER = user.UserId;
-                    request.REQ_IDE_STATUS_APROV = 8;
+                    request.REQ_IDE_STATUS_APROV = 5;
                     if (db.Create(request))
                         return RedirectToAction("Index");
                 }
@@ -197,5 +197,55 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    return View(request);
         //}
+
+        [CustomAuthorize(Roles = "Administrador, JefeArea")]
+        /*TYPES APPROVE
+         * 1 -> Aprobar Solicitud
+         * 2 -> Comprobar XML
+         */
+        public ActionResult Approve(int id, int type)
+        {
+            if (db.Approve(id, type))
+                ViewBag.Msg = "Exito al aprobar";
+            else
+                ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
+            return View("Index");
+        }
+
+        /*TYPES REJECT
+         * 1 -> rechazar Solicitud
+         * 2 -> Rechazar XML
+         */
+        public ActionResult Reject(int id, int type)
+        {
+
+            if (db.Reject(id, type))
+                ViewBag.Msg = "Exito al " + ((type == 1) ? "Rechazar la Aprobación" : "Rechazar la Comprobación");
+            else
+                ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
+            return View("Index");
+        }
+
+
+        [CustomAuthorize(Roles = "Administrador, CuentasXPagar")]
+        public ActionResult ApproveCXP(int id)
+        {
+
+            if (db.ApproveCXP(id))
+                ViewBag.Msg = "Exito al Rechazar la Comprobación";
+            else
+                ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
+            return View("Index");
+        }
+
+        public ActionResult RejectCXP(int id)
+        {
+
+            if (db.RejectCXP(id))
+                ViewBag.Msg = "Exito al Rechazar la Comprobación";
+            else
+                ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
+            return View("Index");
+        }
     }
 }

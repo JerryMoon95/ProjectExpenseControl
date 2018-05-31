@@ -39,13 +39,17 @@
                                     <li>@Html.ActionLink("Estados de aprovación", "Index", "StatusAprovs")</li>
                                     <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
                                     <li>@Html.ActionLink("Usuarios", "Index", "User")</li>
+
                                     <li role="separator" class="divider"></li>
-                                } else if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "JefeArea")
+                                    <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
+                                    <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
+                                    <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
+                                } else if (user.RoleName[0] == "JefeArea")
                                 {
                                     <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
                                     <li role="separator" class="divider"></li>
 
-                                } else if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "CuentasXPagar")
+                                } else if (user.RoleName[0] == "CuentasXPagar")
                                 {
 
                                     <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
