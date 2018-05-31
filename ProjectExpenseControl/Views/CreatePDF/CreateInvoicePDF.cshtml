@@ -7,7 +7,8 @@
 <div class="container">
     @if (!ViewBag.PDF)
     {
-        @Html.ActionLink("Generar PDF", "PrintAllReport")
+        <div>@Html.ActionLink("Generar PDF", "PrintAllReport")</div>
+        <div>@Html.ActionLink("Regresar", "Index", "Requests")</div>
     }
 
     <div class="row">
@@ -174,7 +175,7 @@
             </div>
         </div>
     </div>
-    <table border="1" >
+    <table border="1">
         <tr>
             <td colspan="2">
                 <strong>Importe con Letra: </strong>@Model.MonedaLetra
@@ -188,8 +189,8 @@
                 <div class="textoContiguo">
                     <strong>Cadena Original del Timbre: </strong><br />
                     @("||" + Model.TimbreFiscalDigital.Version + "|" + Model.TimbreFiscalDigital.FechaTimbrado
-                                        + "|" + Model.TimbreFiscalDigital.RfcProvCertif + "|" + Model.TimbreFiscalDigital.SelloCFD
-                                        + "|" + Model.TimbreFiscalDigital.NoCertificadoSAT + "||")
+                                                        + "|" + Model.TimbreFiscalDigital.RfcProvCertif + "|" + Model.TimbreFiscalDigital.SelloCFD
+                                                        + "|" + Model.TimbreFiscalDigital.NoCertificadoSAT + "||")
                     <br />
                 </div>
                 <div class="textoContiguo">

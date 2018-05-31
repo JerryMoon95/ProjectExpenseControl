@@ -119,5 +119,19 @@ namespace ProjectExpenseControl.Controllers
                 return RedirectToAction("Delete/" + id);
         }
 
+        public JsonResult GetRoles()
+        {
+            AuthenticationDB db = new AuthenticationDB();
+            var dbResult = db.Roles.ToList();
+            var roles = (from rol in dbResult
+                         select new
+                         {
+                             rol.TUSR_IDE_RESOURCE,
+                             rol.TUSR_DES_TYPE,
+                             rol.TUSR_FH_CREATED
+                         });
+            return Json(roles, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

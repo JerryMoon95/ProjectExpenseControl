@@ -2,10 +2,8 @@
 using ProjectExpenseControl.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 
 namespace ProjectExpenseControl.Services
 {
@@ -19,17 +17,19 @@ namespace ProjectExpenseControl.Services
             }
         }
 
-        public Boolean Create(Request model)
+        public int Create(Request model)
         {
             if (model != null)
             {
                 using (AuthenticationDB db = new AuthenticationDB())
                 {
                     db.Requests.Add(model);
-                    return (db.SaveChanges() > 0) ? true : false;
+                    db.SaveChanges();
+                    //(db.SaveChanges() > 0) ? true : false;
+                    return model.REQ_IDE_REQUEST;
                 }
             }
-            return false;
+            return 0;
         }
 
         public Request GetOne(int? id)

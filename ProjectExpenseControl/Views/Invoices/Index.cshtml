@@ -4,72 +4,133 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Facturas</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nueva", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_SERIE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_FOLIO)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_FH_FECHA)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_TOTAL)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_LUGAR_EXPEDICION)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_RFC)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_EMISOR_NOMBRE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.INV_DES_UUID)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_SERIE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_FOLIO)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_FH_FECHA)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_TOTAL)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_LUGAR_EXPEDICION)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_EMISOR_RFC)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_EMISOR_NOMBRE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.INV_DES_UUID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.INV_ID_INVOICE }) |
-            @Html.ActionLink("Details", "Details", new { id=item.INV_ID_INVOICE }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.INV_ID_INVOICE })
-        </td>
-    </tr>
+@Html.Partial("_LayoutBottonsExportData")
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'INV_ID_INVOICE', type: 'int' },
+                        { name: 'INV_IDE_REQUEST', type: 'int' },
+                        { name: 'INV_DES_SERIE', type: 'string' },
+                        { name: 'INV_DES_FOLIO', type: 'string' },
+                        { name: 'INV_FH_FECHA', type: 'date' },
+                        { name: 'INV_DES_TOTAL', type: 'float' },
+                        { name: 'INV_DES_LUGAR_EXPEDICION', type: 'string' },
+                        { name: 'INV_DES_EMISOR_RFC', type: 'string' },
+                        { name: 'INV_DES_EMISOR_NOMBRE', type: 'string' },
+                        { name: 'INV_DES_UUID', type: 'string' }
+                    ],
+                    id: 'INV_ID_INVOICE',
+                    url: '/Invoices/GetInvoices'
+                };
+
+            var editar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "INV_ID_INVOICE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Invoices/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var detalle = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "INV_ID_INVOICE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Invoices/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var borrar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "INV_ID_INVOICE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Invoices/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#grid").jqxGrid(
+                {
+                    width: $("#grid").parent().width(),
+                    height: $("#grid").parent().height(),
+                    autoheight: true,
+                    source: dataAdapter,
+                    theme: 'darkblue',
+                    ready: function () {
+                        $('#grid').jqxGrid('autoresizecolumns');
+                    },
+                    pageSize: 10,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columnsresize: true,
+                    columnsreorder: true,
+                    autoshowfiltericon: true,
+                    columns: [
+                        { text: '', cellsrenderer: editar },
+                        { text: '', cellsrenderer: detalle },
+                        { text: '', cellsrenderer: borrar },
+                        { text: 'Solicitud', dataField: 'INV_IDE_REQUEST', cellsalign: 'center' },
+                        { text: 'Serie', dataField: 'INV_DES_SERIE' },
+                        { text: 'Folio', dataField: 'INV_DES_FOLIO' },
+                        { text: 'Fecha', dataField: 'INV_FH_FECHA', cellsformat: 'd' },
+                        { text: 'Total', dataField: 'INV_DES_TOTAL', cellsalign: 'right', cellsformat: 'c2' },
+                        { text: 'Lugar Expedición', dataField: 'INV_DES_LUGAR_EXPEDICION' },
+                        { text: 'RFC Emisor', dataField: 'INV_DES_EMISOR_RFC' },
+                        { text: 'Nombre Emisor', dataField: 'INV_DES_EMISOR_NOMBRE' },
+                        { text: 'UUID', dataField: 'INV_DES_UUID'},
+                    ]
+                });
+
+            $("#grid").on('columnreordered', function (event) {
+                $("#grid").jqxGrid('autoresizecolumns');
+            });
+            $('#grid').on('filter', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+            $('#grid').bind('pagechanged', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+
+            $("#excelExport").jqxButton();
+            $("#xmlExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#htmlExport").jqxButton();
+            $("#jsonExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');
+            });
+            $("#xmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xml', 'jqxGrid');
+            });
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+
+            $("#htmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'html', 'jqxGrid');
+            });
+            $("#jsonExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'json', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+        });
+    </script>
 }
 
-</table>

@@ -1,5 +1,4 @@
-﻿using Rotativa.MVC;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,19 +6,26 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using ProjectExpenseControl.CustomAuthentication;
+using Rotativa;
+using Rotativa.Options;
 
 namespace ProjectExpenseControl.Controllers
 {
     
     public class CreatePDFController : Controller
     {
-        
-        public ActionResult CreateInvoicePDF(bool pdf = false)
+        private static string path;
+
+        public ActionResult CreateInvoicePDF(string pathXML, bool pdf = false)
         {
             Comprobante oComprobante;
-            string pathXML = Server.MapPath("~") + "/xml/archivoXML4.xml";
+            //string pathXML = Server.MapPath("~") + "/xml/archivoXML4.xml";
+            if (!string.IsNullOrEmpty(pathXML))
+            {
+                path = pathXML;
+            }
             XmlSerializer oSerializer = new XmlSerializer(typeof(Comprobante));
-            using (StreamReader reader = new StreamReader(pathXML))
+            using (StreamReader reader = new StreamReader(path))
             {
                 oComprobante = (Comprobante)oSerializer.Deserialize(reader);
                 var b = oComprobante.SubTotal;
@@ -46,8 +52,12 @@ namespace ProjectExpenseControl.Controllers
 
         public ActionResult PrintAllReport()
         {
-            var report = new ActionAsPdf("CreateInvoicePDF", new { pdf = true }) { FileName="Factura.pdf"};
-            return report;
+            return new ActionAsPdf("CreateInvoicePDF", new { pdf = true })
+            {
+                FileName = "Factura.pdf",
+                PageSize = Size.Letter,
+                PageOrientation = Orientation.Portrait
+            };
         }
     }
 }

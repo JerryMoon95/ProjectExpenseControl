@@ -4,15 +4,13 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Catalogo de Cuentas Contables</h2>
+<h2>Cuentas Contables</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 
 @Html.Partial("_LayoutBottonsExportData")
-
-
 
 @section scripts
 {
@@ -34,7 +32,7 @@
             var editar = function (id, row, column, value) {
                 var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/Areas/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var href = "<a href=/AccountingAccounts/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
@@ -42,7 +40,7 @@
             var detalle = function (id, row, column, value) {
                 var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/Areas/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var href = "<a href=/AccountingAccounts/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
@@ -50,7 +48,7 @@
             var borrar = function (id, row, column, value) {
                 var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/Areas/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var href = "<a href=/AccountingAccounts/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
@@ -59,24 +57,41 @@
             // create Tree Grid
             $("#grid").jqxGrid(
                 {
-                    width: 940,
+                    width: $("#grid").parent().width(),
+                    height: $("#grid").parent().height(),
+                    autoheight: true,
                     source: dataAdapter,
                     theme: 'darkblue',
+                    ready: function () {
+                        $('#grid').jqxGrid('autoresizecolumns');
+                        },
                     pageSize: 10,
                     sortable: true,
                     filterable: true,
                     pageable: true,
                     columnsresize: true,
-                    autoshowfiltericon: false,
+                    columnsreorder:true,
+                    autoshowfiltericon: true,
                     columns: [
-                        { text: '', cellsrenderer: editar, width: 20, align: 'center' },
-                        { text: '', cellsrenderer: detalle, width: 20, align: 'center' },
-                        { text: '', cellsrenderer: borrar, width: 20, align: 'center' },
-                        { text: 'Cuenta Contable', dataField: 'ACC_IDE_ACCOUNT', width: 130 },
-                        { text: 'Descripción de la Cuenta', dataField: 'ACC_DES_ACCOUNT', width: 430 },
+                        { text: '', cellsrenderer: editar },
+                        { text: '', cellsrenderer: detalle },
+                        { text: '', cellsrenderer: borrar },
+                        { text: 'Cuenta Contable', dataField: 'ACC_IDE_ACCOUNT' },
+                        { text: 'Descripción de la Cuenta', dataField: 'ACC_DES_ACCOUNT' },
                         { text: 'Fecha de Creación', dataField: 'ACC_FH_CREATED', cellsformat:'d'  },
                     ]
                 });
+
+            $("#grid").on('columnreordered', function (event) {
+                $("#grid").jqxGrid('autoresizecolumns');
+            });
+            $('#grid').on('filter', function() {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+            $('#grid').bind('pagechanged', function() {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+
             $("#excelExport").jqxButton();
             $("#xmlExport").jqxButton();
             $("#csvExport").jqxButton();
@@ -105,7 +120,3 @@
         });
     </script>
 }
-
-
-
-

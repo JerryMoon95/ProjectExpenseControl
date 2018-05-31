@@ -4,17 +4,21 @@
     ViewBag.Title = "Prove";
 }
 
-<h2>Prove</h2>
+<h2>Comprobación del Gasto</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
     <div class="form-horizontal">
-        <h4>Request</h4>
+        <h4>Solicitud</h4>
         <hr />
         <div>
             <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.REQ_IDE_REQUEST)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.REQ_IDE_REQUEST)
+                </dd>
+
                 <dt>
                     @Html.DisplayNameFor(model => model.REQ_IDE_USER)
                 </dt>
@@ -31,13 +35,13 @@
                     @Html.DisplayFor(model => model.REQ_DES_TYPE_GASTO)
                 </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.REQ_DES_CONCEPT)
+                @*<dt>
+                    @Html.DisplayNameFor(model => model.REQ_IDE_ACCOUNT)
                 </dt>
 
                 <dd>
-                    @Html.DisplayFor(model => model.REQ_DES_CONCEPT)
-                </dd>
+                    @Html.DisplayFor(model => model.REQ_IDE_ACCOUNT)
+                </dd>*@
 
                 <dt>
                     @Html.DisplayNameFor(model => model.REQ_DES_QUANTITY)
@@ -58,18 +62,41 @@
         </div>
 
 
-        @using(Html.BeginForm("UploadFile","Invoices", FormMethod.Post, new { enctype="multipart/form-data"}))  
-        {  
-            <div>  
-                @Html.TextBox("file", "", new {  type= "file"}) <br />  
-                <input type="submit" value="Upload" />  
-                @ViewBag.Message  
-            </div>  
-        }  
-                
-    </div>
-}
+        @using (Html.BeginForm("Prove", "Requests", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div>
+                @Html.Hidden("request", (string)ViewBag.solicitud)
+                @Html.TextBox("file", "", new { type = "file", @class = "form-control valid", @data_val = "true", @data_val_required = "Billing Address is required" })
+                <br />
+                <input type="submit" value="Cargar" /><br />
+                @ViewBag.Message
+            </div>
+            <br />
+            <table class="table">
+                <tr>
+                    <th>
+                        Archivos XML
+                    </th>
+                    <th></th>
+                </tr>
+                @foreach (var item in ViewBag.archivos)
+                {
+                    <tr>
+                        <td>
+                            @Path.GetFileNameWithoutExtension(item)
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Crear PDF", "CreateInvoicePDF", "CreatePDF", new { pathXML = item }, null)
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+
+
+    <div>
+        @Html.ActionLink("Regresar a la Lista", "Index")
+    </div>
+

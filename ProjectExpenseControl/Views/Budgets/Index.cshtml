@@ -4,50 +4,126 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Presupuestos</h2>
 
 <p>
     @Html.ActionLink("Crear Presupuesto", "Create")
 </p>
-<table class="table">
-    <tr>
 
-        <th>
-            @Html.DisplayNameFor(model => model.BUD_IDE_ACCOUNT)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BUD_DES_QUANTITY)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BUD_DES_PERIOD)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BUD_FH_CREATED)
-        </th>
-        <th></th>
-    </tr>
+@Html.Partial("_LayoutBottonsExportData")
 
-@foreach (var item in Model)
+@section scripts
 {
-    <tr>
+    <script>
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'BUD_IDE_BUDGET', type: 'int' },
+                        { name: 'USR_DES_NAME', type: 'string' },
+                        { name: 'ACC_DES_ACCOUNT', type: 'string' },
+                        { name: 'ARE_DES_NAME', type: 'string' },
+                        { name: 'BUD_DES_QUANTITY', type: 'float' },
+                        { name: 'BUD_DES_PERIOD', type: 'string' },
+                        { name: 'BUD_FH_CREATED', type: 'date' },
+                    ],
+                    id: 'BUD_IDE_BUDGET',
+                    url: '/Budgets/GetBudgets'
+                };
 
-        <td>
-            @Html.DisplayFor(modelItem => item.BUD_IDE_ACCOUNT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BUD_DES_QUANTITY)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BUD_DES_PERIOD)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.BUD_FH_CREATED)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.BUD_IDE_BUDGET }) |
-            @Html.ActionLink("Details", "Details", new { id = item.BUD_IDE_BUDGET }) 
-        </td>
-    </tr>
+            var editar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "BUD_IDE_BUDGET");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Budgets/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var detalle = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "BUD_IDE_BUDGET");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Budgets/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var borrar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "BUD_IDE_BUDGET");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Budgets/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#grid").jqxGrid(
+                {
+                    width: $("#grid").parent().width(),
+                    height: $("#grid").parent().height(),
+                    autoheight: true,
+                    source: dataAdapter,
+                    theme: 'darkblue',
+                    ready: function () {
+                        $('#grid').jqxGrid('autoresizecolumns');
+                    },
+                    pageSize: 10,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columnsresize: true,
+                    columnsreorder: true,
+                    autoshowfiltericon: true,
+                    columns: [
+                        { text: '', cellsrenderer: editar },
+                        { text: '', cellsrenderer: detalle },
+                        { text: '', cellsrenderer: borrar },
+                        { text: 'Usuario', dataField: 'USR_DES_NAME' },
+                        { text: 'Cuenta Contable', dataField: 'ACC_DES_ACCOUNT' },
+                        { text: 'Área', dataField: 'ARE_DES_NAME' },
+                        { text: 'Cantidad', dataField: 'BUD_DES_QUANTITY', cellsalign: 'right', cellsformat: 'c' },
+                        { text: 'Periodo', dataField: 'BUD_DES_PERIOD' },
+                        { text: 'Fecha de Creación', dataField: 'BUD_FH_CREATED', cellsformat: 'd' },
+                    ]
+                });
+
+            $("#grid").on('columnreordered', function (event) {
+                $("#grid").jqxGrid('autoresizecolumns');
+            });
+            $('#grid').on('filter', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+            $('#grid').bind('pagechanged', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+
+            $("#excelExport").jqxButton();
+            $("#xmlExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#htmlExport").jqxButton();
+            $("#jsonExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');
+            });
+            $("#xmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xml', 'jqxGrid');
+            });
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+
+            $("#htmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'html', 'jqxGrid');
+            });
+            $("#jsonExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'json', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+        });
+    </script>
 }
-
-</table>

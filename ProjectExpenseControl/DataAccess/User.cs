@@ -11,7 +11,7 @@ namespace ProjectExpenseControl.DataAccess
     {
 
         [Key]
-        [Display(Name = "IDE DE USUARIO")]
+        [Display(Name = "ID DE USUARIO")]
         public int USR_IDE_USER { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]

@@ -37,7 +37,7 @@ namespace ProjectExpenseControl.Services
             {
                 using (AuthenticationDB db = new AuthenticationDB())
                 {
-                    Invoice Invoice = db.Invoices.Find(id);
+                    Invoice Invoice = db.Invoices.Find(Int32.Parse(id));
                     if (Invoice != null)
                         return Invoice;
                 }

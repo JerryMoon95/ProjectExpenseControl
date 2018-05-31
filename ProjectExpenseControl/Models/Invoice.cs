@@ -10,8 +10,11 @@ namespace ProjectExpenseControl.Models
     {
         [Key]
         //'[Required]
-        //[Display(Name = "CÓDIGO DE FACTURA")]
+        [Display(Name = "ID DE LA FACTURA")]
         public int INV_ID_INVOICE { get; set; }
+
+        [Display(Name = "SOLICITUD")]
+        public int INV_IDE_REQUEST { get; set; }
 
         [Display(Name = "SERIE")]
         [StringLength(10)]
@@ -22,7 +25,7 @@ namespace ProjectExpenseControl.Models
         public string INV_DES_FOLIO { get; set; }
 
         [Required]
-        [Display(Name = "Fecha de creación")]
+        [Display(Name = "FECHA DE LA FACTURA")]
         public DateTime INV_FH_FECHA { get; set; }
 
         [Required]

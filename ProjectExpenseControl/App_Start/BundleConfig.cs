@@ -46,6 +46,7 @@ namespace ProjectExpenseControl.App_Start
                     "~/Scripts/jqwidgets/jqxgrid.sort.js",
                     "~/Scripts/jqwidgets/jqxgrid.filter.js",
                     "~/Scripts/jqwidgets/jqxgrid.pager.js",
+                    "~/Scripts/jqwidgets/jqxgrid.columnsreorder.js",
                     "~/Scripts/jqwidgets/jqxgrid.columnsresize.js",
                     "~/Scripts/jqwidgets/jqxgrid.selection.js",
                     "~/Scripts/jqwidgets/jqxdatetimeinput.js",
@@ -89,6 +90,5 @@ namespace ProjectExpenseControl.App_Start
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
         }
-
     }
 }

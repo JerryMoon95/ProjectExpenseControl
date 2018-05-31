@@ -107,7 +107,7 @@
             @Html.DisplayFor(modelItem => item.REQ_FH_CREATED)
         </td>
         <td>
-            @{ 
+            @{
                 switch (item.REQ_IDE_STATUS_APROV)
                 {
                     case 5:
@@ -137,14 +137,14 @@
                         }
                         else if (user.RoleName[0] == "Administrador")
                         {
-                            
+
                             @:Solicitud Aprobada |
                         }
                         break;
                     case 8:
                         if (user.RoleName[0] == "Usuario" || user.RoleName[0] == "Administrador")
                         {
-                            @:Solicitud por Comprobar |
+                            @:Solicitud por Comprobar | @Html.ActionLink("Comprobar", "Prove", new { id = item.REQ_IDE_REQUEST }) 
 
                         }
                         else if (user.RoleName[0] == "JefeArea")
@@ -176,13 +176,13 @@
                             @:Solicitud por Aprobar CXP |
 
                         }
-                        else if ( user.RoleName[0] == "CuentasXPagar")
+                        else if (user.RoleName[0] == "CuentasXPagar")
                         {
                             @Html.ActionLink("Aprobar", "ApproveCXP", new { id = item.REQ_IDE_REQUEST }, new { @class = "text-success" }) @:|
                             @Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) @:|
                             @Html.ActionLink("Rechazar", "RejectCXP", new { id = item.REQ_IDE_REQUEST }, new { @class = "text-danger" }) @:|
                         }
-                        
+
                         break;
                     case 12:
                         if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "Usuario")
@@ -190,7 +190,7 @@
                             @:Solicitud Rechazada CXP |
 
                         }
-                        
+
                         break;
                     case 13:
                         if (user.RoleName[0] == "Administrador" || user.RoleName[0] == "Usuario")
@@ -201,11 +201,11 @@
 
                 }
             }
-            
-            
+
+
             @*@Html.ActionLink("Delete", "Delete", new { id = item.REQ_IDE_REQUEST }) |*@
             @*@Html.ActionLink("Detalles", "Details", new { id = item.REQ_IDE_REQUEST }) |*@
-            
+
         </td>
     </tr>
 }

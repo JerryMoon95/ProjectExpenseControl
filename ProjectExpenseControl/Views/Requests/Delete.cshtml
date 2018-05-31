@@ -4,11 +4,11 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Eliminar Solicitud</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>¿Está seguro de eliminar la solicitud?</h3>
 <div>
-    <h4>Request</h4>
+    <h4>Solicitud</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,13 +19,13 @@
             @Html.DisplayFor(model => model.REQ_IDE_USER)
         </dd>
 
-        <dt>
+        @*<dt>
             @Html.DisplayNameFor(model => model.REQ_IDE_AREA)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.REQ_IDE_AREA)
-        </dd>
+        </dd>*@
 
         <dt>
             @Html.DisplayNameFor(model => model.REQ_DES_TYPE_GASTO)
@@ -81,8 +81,8 @@
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            @Html.ActionLink("Regresar a la Lista", "Index")
         </div>
     }
 </div>

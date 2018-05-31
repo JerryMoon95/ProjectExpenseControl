@@ -18,7 +18,7 @@ namespace ProjectExpenseControl.Models
         public int REQ_IDE_USER { get; set; }
 
         [Required]
-        [Display(Name = "VIATICO?")]
+        [Display(Name = "VIÁTICOS")]
         public Boolean REQ_DES_TYPE_GASTO { get; set; }
 
         [Display(Name = "CONCEPTO")]
@@ -35,7 +35,7 @@ namespace ProjectExpenseControl.Models
         [DataType(DataType.MultilineText)]
         public string REQ_DES_OBSERVATIONS { get; set; }
 
-        [Display(Name = "ESTADO DE LA APROVACIÓN")]
+        [Display(Name = "ESTADO DE LA APROBACIÓN")]
         public int REQ_IDE_STATUS_APROV { get; set; }
 
         [Required]

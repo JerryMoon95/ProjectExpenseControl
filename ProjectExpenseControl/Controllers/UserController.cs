@@ -130,6 +130,24 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+        public JsonResult GetUsers()
+        {
+            using (AuthenticationDB db = new AuthenticationDB())
+            {
+                var requests = db.Database.SqlQuery<QueryUsers>("SP_QueryUsers").ToList();
+                return Json(requests, JsonRequestBehavior.AllowGet);
+            }
+        }
 
+        private class QueryUsers
+        {
+            public int USR_IDE_USER { get; set; }
+            public string ARE_DES_NAME { get; set; }
+            public string USR_DES_POSITION { get; set; }
+            public string USR_DES_NAME { get; set; }
+            public string USR_DES_FIRST_NAME { get; set; }
+            public string USR_DES_LAST_NAME { get; set; }
+            public string USR_DES_EMAIL { get; set; }
+        }
     }
 }

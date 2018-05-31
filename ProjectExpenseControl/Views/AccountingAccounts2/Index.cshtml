@@ -1,13 +1,13 @@
-﻿@model IEnumerable<ProjectExpenseControl.DataAccess.User>
+﻿@model IEnumerable<ProjectExpenseControl.Models.AccountingAccount>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Usuarios</h2>
+<h2>Cuentas Contables</h2>
 
 <p>
-    @Html.ActionLink("Crear Nuevo", "Registration", "Account")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
 
 @Html.Partial("_LayoutBottonsExportData")
@@ -21,42 +21,38 @@
                 {
                     dataType: "json",
                     dataFields: [
-                        { name: 'USR_IDE_USER', type: 'int' },
-                        { name: 'ARE_DES_NAME', type: 'string' },
-                        { name: 'USR_DES_POSITION', type: 'string' },
-                        { name: 'USR_DES_NAME', type: 'string' },
-                        { name: 'USR_DES_FIRST_NAME', type: 'string' },
-                        { name: 'USR_DES_LAST_NAME', type: 'string' },
-                        { name: 'USR_DES_EMAIL', type: 'string' }
+                        { name: 'ACC_IDE_ACCOUNT', type: 'string' },
+                        { name: 'ACC_DES_ACCOUNT', type: 'string' },
+                        { name: 'ACC_FH_CREATED', type: 'date' },
                     ],
-                    id: 'USR_IDE_USER',
-                    url: '/User/GetUsers'
+                    id: 'ACC_IDE_ACCOUNT',
+                    url: '/AccountingAccounts/GetAccountinAccounts'
                 };
 
             var editar = function (id, row, column, value) {
-                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/User/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var href = "<a href=/AccountingAccounts/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
 
             var detalle = function (id, row, column, value) {
-                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/User/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var href = "<a href=/AccountingAccounts/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
 
             var borrar = function (id, row, column, value) {
-                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "ACC_IDE_ACCOUNT");
                 var format = { target: '"_new"' };
-                var href = "<a href=/User/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var href = "<a href=/AccountingAccounts/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
                 var html = $.jqx.dataFormat.formatlink(href, format);
                 return html;
             }
-            
+
             var dataAdapter = new $.jqx.dataAdapter(source);
             // create Tree Grid
             $("#grid").jqxGrid(
@@ -80,13 +76,9 @@
                         { text: '', cellsrenderer: editar },
                         { text: '', cellsrenderer: detalle },
                         { text: '', cellsrenderer: borrar },
-                        { text: 'Id', dataField: 'USR_IDE_USER' },
-                        { text: 'Área', dataField: 'ARE_DES_NAME' },
-                        { text: 'Puesto', dataField: 'USR_DES_POSITION'},
-                        { text: 'Nombre', dataField: 'USR_DES_NAME'},
-                        { text: 'Apellido Paterno', dataField: 'USR_DES_FIRST_NAME'},
-                        { text: 'Apellido Materno', dataField: 'USR_DES_LAST_NAME' },
-                        { text: 'Correo', dataField: 'USR_DES_EMAIL'}
+                        { text: 'Cuenta Contable', dataField: 'ACC_IDE_ACCOUNT' },
+                        { text: 'Descripción de la Cuenta', dataField: 'ACC_DES_ACCOUNT' },
+                        { text: 'Fecha de Creación', dataField: 'ACC_FH_CREATED', cellsformat: 'd' },
                     ]
                 });
 
