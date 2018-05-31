@@ -1,8 +1,10 @@
 ﻿using ProjectExpenseControl.CustomAuthentication;
+using ProjectExpenseControl.DataAccess;
 using ProjectExpenseControl.Models;
 using ProjectExpenseControl.Services;
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -128,24 +130,28 @@ namespace ProjectExpenseControl.Controllers
         //    base.Dispose(disposing);
         //}
 
-        public ActionResult UploadFile(HttpPostedFileBase file)
+        public JsonResult GetInvoices()
         {
-            try
+            using(AuthenticationDB db = new AuthenticationDB())
             {
-                if (file.ContentLength > 0)
-                {
-                    string _FileName = Path.GetFileName(file.FileName);
-                    string _Path = Path.Combine(Server.MapPath("~/Xml"), _FileName);
-                    file.SaveAs(_Path);
-                }
-                ViewBag.Message = "El Archivo se Cargó Correctamente";
-                return View();
+                var dbResult = db.Invoices.ToList();
+                var invoices = (from invoice in dbResult
+                                select new
+                                {
+                                    invoice.INV_ID_INVOICE,
+                                    invoice.INV_IDE_REQUEST,
+                                    invoice.INV_DES_SERIE,
+                                    invoice.INV_DES_FOLIO,
+                                    invoice.INV_FH_FECHA,
+                                    invoice.INV_DES_TOTAL,
+                                    invoice.INV_DES_LUGAR_EXPEDICION,
+                                    invoice.INV_DES_EMISOR_RFC,
+                                    invoice.INV_DES_EMISOR_NOMBRE,
+                                    invoice.INV_DES_UUID
+                                });
+                return Json(invoices, JsonRequestBehavior.AllowGet);
             }
-            catch
-            {
-                ViewBag.Message = "La Caraga de Archivo Falló";
-                return View();
-            }
+                
         }
 
     }

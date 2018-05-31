@@ -1,25 +1,23 @@
-﻿using System;
+﻿using ProjectExpenseControl.CustomAuthentication;
+using ProjectExpenseControl.Models;
+using ProjectExpenseControl.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
-using System.Linq;
+using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ProjectExpenseControl.CustomAuthentication;
-using ProjectExpenseControl.DataAccess;
-using ProjectExpenseControl.Models;
-using ProjectExpenseControl.Services;
 
 namespace ProjectExpenseControl.Controllers
 {
     [CustomAuthorize(Roles = "Administrador, JefeArea, Usuario, CuentasXPagar")]
     public class RequestsController : Controller
     {
-        private RequestsRepository db;
+        private RequestsRepository _db;
         public RequestsController()
         {
-            db = new RequestsRepository();
+            _db = new RequestsRepository();
         }
 
         // GET: Requests
@@ -34,7 +32,7 @@ namespace ProjectExpenseControl.Controllers
                     case "Administrador":
                         option = 1;
                         ViewBag.typeUser = option;
-                        return View(db.GetAll());
+                        return View(_db.GetAll());
                     case "Usuario":
                         option = 2;
                         break;
@@ -47,7 +45,7 @@ namespace ProjectExpenseControl.Controllers
                     default:
                         return RedirectToAction("Logout", "Account");
                 }
-                var requests = db.GetWithFilter(user.UserId, option);
+                var requests = _db.GetWithFilter(user.UserId, option);
 
                 ViewBag.Option = option;
                 return View(requests);
@@ -62,7 +60,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Request request = db.GetOne(id);
+            Request request = _db.GetOne(id);
             if (request == null)
             {
                 return HttpNotFound();
@@ -91,9 +89,15 @@ namespace ProjectExpenseControl.Controllers
                 {
                     request.REQ_FH_CREATED = DateTime.Now;
                     request.REQ_IDE_USER = user.UserId;
-                    request.REQ_IDE_STATUS_APROV = 5;
-                    if (db.Create(request))
+                    request.REQ_IDE_STATUS_APROV = 0;
+                    int id = _db.Create(request);
+                    if (id > 0)
+                    {
+                        FilesRepository _repo = new FilesRepository();
+                        _repo.CrearDirectorio(id.ToString(), Server.MapPath("~"));
+                        //
                         return RedirectToAction("Index");
+                    }
                 }
                 else
                 {
@@ -111,7 +115,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Request request = db.GetOne(id);
+            Request request = _db.GetOne(id);
             if (request == null)
             {
                 return HttpNotFound();
@@ -128,7 +132,7 @@ namespace ProjectExpenseControl.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(db.Update(request))
+                if(_db.Update(request))
                     return RedirectToAction("Index");
             }
             return View(request);
@@ -141,7 +145,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Request request = db.GetOne(id);
+            Request request = _db.GetOne(id);
             if (request == null)
             {
                 return HttpNotFound();
@@ -154,7 +158,7 @@ namespace ProjectExpenseControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if(db.Delete(id))
+            if(_db.Delete(id))
                 return RedirectToAction("Index");
             else
                 return RedirectToAction("Delete/"+id);
@@ -169,34 +173,123 @@ namespace ProjectExpenseControl.Controllers
         //    base.Dispose(disposing);
         //}
 
+        
         public ActionResult Prove(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Request request = db.GetOne(id);
+            Request request = _db.GetOne(id);
             if (request == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.solicitud = id.ToString();
+            ViewBag.archivos = CargarTabla(id.ToString());
             return View(request);
         }
 
-        // POST: Requests/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
+        [HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Prove([Bind(Include = "REQ_IDE_REQUEST,REQ_IDE_USER,REQ_IDE_AREA,REQ_DES_TYPE_GASTO,REQ_DES_CONCEPT,REQ_DES_QUANTITY,REQ_DES_OBSERVATIONS,REQ_IDE_STATUS_APROV,REQ_FH_CREATED")] Request request)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (db.Update(request))
-        //            return RedirectToAction("Index");
-        //    }
-        //    return View(request);
-        //}
+        public ActionResult Prove(HttpPostedFileBase file, string request)
+        {
+            if (file.ContentLength > 0)
+            {
+                try
+                {
+                    if (file.ContentType == "text/xml")
+                    {
+                        string _FileName = request + ".xml";
+                        string _path = Path.Combine(Server.MapPath("~/Xml/") + request, _FileName);
+                        if (System.IO.File.Exists(_path))
+                        {
+                            int i = 1;
+                            while (System.IO.File.Exists(_path))
+                            {
+                                _path = Server.MapPath("~/Xml/") + request + @"\" + Path.GetFileNameWithoutExtension(_FileName) + i.ToString() + ".xml";
+                                i++;
+                            }
+                            file.SaveAs(_path);
+                        }
+                        else
+                        {
+                            file.SaveAs(_path);
+                        }
+
+                        DataSet ds = new DataSet();
+                        ds.ReadXml(_path);
+                        Invoice invoice = new Invoice();
+                        invoice.INV_IDE_REQUEST = int.Parse(request);
+                        if (ds.Tables["Comprobante"].Columns.Contains("serie"))
+                        {
+                            invoice.INV_DES_SERIE = ds.Tables["Comprobante"].Rows[0]["serie"].ToString();
+                        }
+                        if (ds.Tables["Comprobante"].Columns.Contains("folio"))
+                        {
+                            invoice.INV_DES_FOLIO = ds.Tables["Comprobante"].Rows[0]["folio"].ToString();
+                        }
+                        invoice.INV_FH_FECHA = DateTime.Parse(ds.Tables["Comprobante"].Rows[0]["fecha"].ToString());
+                        invoice.INV_DES_TOTAL = Decimal.Parse(ds.Tables["Comprobante"].Rows[0]["total"].ToString());
+                        invoice.INV_DES_LUGAR_EXPEDICION = ds.Tables["Comprobante"].Rows[0]["LugarExpedicion"].ToString();
+                        if (ds.Tables["Emisor"].Columns.Contains("nombre"))
+                        {
+                            invoice.INV_DES_EMISOR_NOMBRE = ds.Tables["Emisor"].Rows[0]["nombre"].ToString();
+                        }
+
+                        invoice.INV_DES_EMISOR_RFC = ds.Tables["Emisor"].Rows[0]["rfc"].ToString();
+                        invoice.INV_DES_UUID = ds.Tables["TimbreFiscalDigital"].Rows[0]["uuid"].ToString();
+
+                        InvoicesRepository _repository = new InvoicesRepository();
+                        if (_repository.Create(invoice))
+                        {
+
+                        }
+
+                        ViewBag.Message = "¡El archivo se cargó satisfactoriamente!";
+                        ViewBag.archivos = CargarTabla(request);
+                        ViewBag.solicitud = request;
+                        return RedirectToAction("Prove/" + request);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "¡El archivo no es un XML!";
+                        ViewBag.archivos = CargarTabla(request);
+                        ViewBag.solicitud = request;
+                        return RedirectToAction("Prove/" + request);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.Message.ToString();
+                    ViewBag.Message = e + "¡Falló la carga del archivo!";
+                    ViewBag.archivos = CargarTabla(request);
+                    ViewBag.solicitud = request;
+                    return RedirectToAction("Prove/" + request);
+                }
+            }
+            else
+            {
+                ViewBag.Message = "No se selecciono ningun archivo.";
+                ViewBag.archivos = CargarTabla(request);
+                ViewBag.solicitud = request;
+                return RedirectToAction("Prove/" + request);
+            }
+        }
+
+        private List<string> CargarTabla(string request)
+        {
+            //string solictud = "01";
+            FilesRepository filesManagement = new FilesRepository();
+            List<string> ficheros;
+            ficheros = filesManagement.ArchivosDirectorio(request, Server.MapPath("~"));
+            return ficheros;
+        }
+
+
+
+
+
 
         [CustomAuthorize(Roles = "Administrador, JefeArea")]
         /*TYPES APPROVE
@@ -205,7 +298,7 @@ namespace ProjectExpenseControl.Controllers
          */
         public ActionResult Approve(int id, int type)
         {
-            if (db.Approve(id, type))
+            if (_db.Approve(id, type))
                 ViewBag.Msg = "Exito al aprobar";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
@@ -219,7 +312,7 @@ namespace ProjectExpenseControl.Controllers
         public ActionResult Reject(int id, int type)
         {
 
-            if (db.Reject(id, type))
+            if (_db.Reject(id, type))
                 ViewBag.Msg = "Exito al " + ((type == 1) ? "Rechazar la Aprobación" : "Rechazar la Comprobación");
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
@@ -231,7 +324,7 @@ namespace ProjectExpenseControl.Controllers
         public ActionResult ApproveCXP(int id)
         {
 
-            if (db.ApproveCXP(id))
+            if (_db.ApproveCXP(id))
                 ViewBag.Msg = "Exito al Rechazar la Comprobación";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
@@ -241,7 +334,7 @@ namespace ProjectExpenseControl.Controllers
         public ActionResult RejectCXP(int id)
         {
 
-            if (db.RejectCXP(id))
+            if (_db.RejectCXP(id))
                 ViewBag.Msg = "Exito al Rechazar la Comprobación";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";

@@ -4,15 +4,19 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Detalles del Usuario</h2>
 
 <div>
-    <h4>User</h4>
+    <h4>Usuario</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.USR_IDE_USER)
         </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USR_IDE_USER)
+        </dd>
 
         <dt>
             @Html.DisplayNameFor(model => model.USR_IDE_AREA)
@@ -78,9 +82,17 @@
             @Html.DisplayFor(model => model.USR_DES_EMAIL)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.USR_FH_CREATED)
+        </dt>
+
         <dd>
             @Html.DisplayFor(model => model.USR_FH_CREATED)
         </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USR_FH_LAST_LOGIN)
+        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.USR_FH_LAST_LOGIN)
@@ -89,6 +101,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.USR_IDE_USER }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Editar", "Edit", new { id = Model.USR_IDE_USER }) |
+    @Html.ActionLink("Regresar a la Lista", "Index")
 </p>

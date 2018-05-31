@@ -4,7 +4,7 @@
     ViewBag.Title = "Crear Área";
 }
 
-<h2>Create</h2>
+<h2>Crear Área</h2>
 
 
 @using (Html.BeginForm()) 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Area</h4>
+        <h4>Área</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -43,6 +43,4 @@
     @Html.ActionLink("Regresar a la Lista", "Index")
 </div>
 
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -150,5 +151,27 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+        public JsonResult GetBudgets()
+        {
+            CustomSerializeModel user = new CustomSerializeModel();
+            user = (CustomSerializeModel)Session["user"];
+            AuthenticationDB db = new AuthenticationDB();
+            var budgets = db.Database.SqlQuery<QueryBudget>("SP_QueryBudget @p_BUD_IDE_USER", new SqlParameter("@p_BUD_IDE_USER", user.UserId)).ToList();
+            return Json(budgets, JsonRequestBehavior.AllowGet);
+        }
+
+        private class QueryBudget
+        {
+            public int BUD_IDE_BUDGET { get; set; }
+            public string USR_DES_NAME { get; set; }
+            public string ACC_DES_ACCOUNT { get; set; }
+            public string ARE_DES_NAME { get; set; }
+            public decimal BUD_DES_QUANTITY { get; set; }
+            public string BUD_DES_PERIOD { get; set; }
+            public DateTime BUD_FH_CREATED { get; set; }
+
+        }
+
     }
 }

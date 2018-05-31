@@ -4,36 +4,120 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Perfiles</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Crear Nuevo", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.TUSR_DES_TYPE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TUSR_FH_CREATED)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.TUSR_DES_TYPE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TUSR_FH_CREATED)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TUSR_IDE_RESOURCE }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TUSR_IDE_RESOURCE }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TUSR_IDE_RESOURCE })
-        </td>
-    </tr>
+
+@Html.Partial("_LayoutBottonsExportData")
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'TUSR_IDE_RESOURCE', type: 'int' },
+                        { name: 'TUSR_DES_TYPE', type: 'string' },
+                        { name: 'TUSR_FH_CREATED', type: 'date' }
+                    ],
+                    id: 'TUSR_IDE_RESOURCE',
+                    url: '/Roles/GetRoles'
+                };
+
+            var editar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "TUSR_IDE_RESOURCE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Roles/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var detalle = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "TUSR_IDE_RESOURCE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Roles/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var borrar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "TUSR_IDE_RESOURCE");
+                var format = { target: '"_new"' };
+                var href = "<a href=/Roles/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#grid").jqxGrid(
+                {
+                    width: $("#grid").parent().width(),
+                    height: $("#grid").parent().height(),
+                    autoheight: true,
+                    source: dataAdapter,
+                    theme: 'darkblue',
+                    ready: function () {
+                        $('#grid').jqxGrid('autoresizecolumns');
+                    },
+                    pageSize: 10,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columnsresize: true,
+                    columnsreorder: true,
+                    autoshowfiltericon: true,
+                    columns: [
+                        { text: '', cellsrenderer: editar },
+                        { text: '', cellsrenderer: detalle },
+                        { text: '', cellsrenderer: borrar },
+                        { text: 'Id', dataField: 'TUSR_IDE_RESOURCE' },
+                        { text: 'Rol', dataField: 'TUSR_DES_TYPE' },
+                        { text: 'Fecha de Creación', dataField: 'TUSR_FH_CREATED', cellsformat: 'd' }
+                    ]
+                });
+
+            $("#grid").on('columnreordered', function (event) {
+                $("#grid").jqxGrid('autoresizecolumns');
+            });
+            $('#grid').on('filter', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+            $('#grid').bind('pagechanged', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+
+            $("#excelExport").jqxButton();
+            $("#xmlExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#htmlExport").jqxButton();
+            $("#jsonExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');
+            });
+            $("#xmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xml', 'jqxGrid');
+            });
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+
+            $("#htmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'html', 'jqxGrid');
+            });
+            $("#jsonExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'json', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+        });
+    </script>
 }
-
-</table>

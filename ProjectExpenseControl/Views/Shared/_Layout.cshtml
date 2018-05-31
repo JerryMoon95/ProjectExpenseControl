@@ -31,34 +31,36 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catálogos<span class="caret"></span></a>
 
-                            <ul class="dropdown-menu">
-                                @if (user.RoleName[0] == "Administrador")
-                                {
+                        <ul class="dropdown-menu">
+                            @if (user.RoleName[0] == "Administrador")
+                            {
 
-                                    <li>@Html.ActionLink("Areas", "Index", "Areas")</li>
-                                    <li>@Html.ActionLink("Estados de aprovación", "Index", "StatusAprovs")</li>
-                                    <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
-                                    <li>@Html.ActionLink("Usuarios", "Index", "User")</li>
+                                <li>@Html.ActionLink("Areas", "Index", "Areas")</li>
+                                <li>@Html.ActionLink("Estados de aprobación", "Index", "StatusAprovs")</li>
+                                <li>@Html.ActionLink("Roles", "Index", "Roles")</li>
+                                <li>@Html.ActionLink("Usuarios", "Index", "User")</li>
 
-                                    <li role="separator" class="divider"></li>
-                                    <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
-                                    <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
-                                    <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
-                                } else if (user.RoleName[0] == "JefeArea")
-                                {
-                                    <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
-                                    <li role="separator" class="divider"></li>
-
-                                } else if (user.RoleName[0] == "CuentasXPagar")
-                                {
-
-                                    <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
-                                    <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
-                                    <li role="separator" class="divider"></li>
-                                }
-                                <li>@Html.ActionLink("Solicitudes", "Index", "Requests")</li>
                                 <li role="separator" class="divider"></li>
-                             </ul>
+                                <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
+                                <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
+                                <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
+                            }
+                            else if (user.RoleName[0] == "JefeArea")
+                            {
+                                <li>@Html.ActionLink("Presupuestos", "Index", "Budgets")</li>
+                                <li role="separator" class="divider"></li>
+
+                            }
+                            else if (user.RoleName[0] == "CuentasXPagar")
+                            {
+
+                                <li>@Html.ActionLink("Facturas", "Index", "Invoices")</li>
+                                <li>@Html.ActionLink("Cuentas de mayor", "Index", "AccountingAccounts")</li>
+                                <li role="separator" class="divider"></li>
+                            }
+                            <li>@Html.ActionLink("Solicitudes", "Index", "Requests")</li>
+                            <li role="separator" class="divider"></li>
+                        </ul>
                     </li>
                     }
                     }
@@ -87,6 +89,8 @@
 
     <div class="container body-content">
         @RenderBody()
+        <br /><br />
+        <br /><br />
         <hr />
         <footer>
             <p>&copy; @DateTime.Now - My ASP.NET Application</p>

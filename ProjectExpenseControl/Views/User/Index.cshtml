@@ -4,67 +4,127 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Usuarios</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Registration","Account")
+    @Html.ActionLink("Crear Nuevo", "Registration", "Account")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_IDE_AREA)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_POSITION)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_NAME)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_FIRST_NAME)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_LAST_NAME)
-        </th>
 
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_PHONE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.USR_DES_EMAIL)
-        </th>
-        <th></th>
-    </tr>
+@Html.Partial("_LayoutBottonsExportData")
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_IDE_AREA)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_POSITION)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_NAME)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_FIRST_NAME)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_LAST_NAME)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_PHONE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.USR_DES_EMAIL)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.USR_IDE_USER }) |
-            @Html.ActionLink("Details", "Details", new { id = item.USR_IDE_USER }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.USR_IDE_USER }) 
-        </td>
-    </tr>
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            // prepare the data
+            var source =
+                {
+                    dataType: "json",
+                    dataFields: [
+                        { name: 'USR_IDE_USER', type: 'int' },
+                        { name: 'ARE_DES_NAME', type: 'string' },
+                        { name: 'USR_DES_POSITION', type: 'string' },
+                        { name: 'USR_DES_NAME', type: 'string' },
+                        { name: 'USR_DES_FIRST_NAME', type: 'string' },
+                        { name: 'USR_DES_LAST_NAME', type: 'string' },
+                        { name: 'USR_DES_EMAIL', type: 'string' }
+                    ],
+                    id: 'USR_IDE_USER',
+                    url: '/User/GetUsers'
+                };
+
+            var editar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var format = { target: '"_new"' };
+                var href = "<a href=/User/Edit/" + _id + "><img style='margin-left: 5px; ' src='../../Images/editar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var detalle = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var format = { target: '"_new"' };
+                var href = "<a href=/User/Details/" + _id + "><img style='margin-left: 5px; ' src='../../Images/detalles.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+
+            var borrar = function (id, row, column, value) {
+                var _id = $('#grid').jqxGrid('getcellvalue', id, "USR_IDE_USER");
+                var format = { target: '"_new"' };
+                var href = "<a href=/User/Delete/" + _id + "><img style='margin-left: 5px; ' src='../../Images/eliminar.png'/>";
+                var html = $.jqx.dataFormat.formatlink(href, format);
+                return html;
+            }
+            
+            var dataAdapter = new $.jqx.dataAdapter(source);
+            // create Tree Grid
+            $("#grid").jqxGrid(
+                {
+                    width: $("#grid").parent().width(),
+                    height: $("#grid").parent().height(),
+                    autoheight: true,
+                    source: dataAdapter,
+                    theme: 'darkblue',
+                    ready: function () {
+                        $('#grid').jqxGrid('autoresizecolumns');
+                    },
+                    pageSize: 10,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columnsresize: true,
+                    columnsreorder: true,
+                    autoshowfiltericon: true,
+                    columns: [
+                        { text: '', cellsrenderer: editar },
+                        { text: '', cellsrenderer: detalle },
+                        { text: '', cellsrenderer: borrar },
+                        { text: 'Id', dataField: 'USR_IDE_USER' },
+                        { text: 'Área', dataField: 'ARE_DES_NAME' },
+                        { text: 'Puesto', dataField: 'USR_DES_POSITION'},
+                        { text: 'Nombre', dataField: 'USR_DES_NAME'},
+                        { text: 'Apellido Paterno', dataField: 'USR_DES_FIRST_NAME'},
+                        { text: 'Apellido Materno', dataField: 'USR_DES_LAST_NAME' },
+                        { text: 'Correo', dataField: 'USR_DES_EMAIL'}
+                    ]
+                });
+
+            $("#grid").on('columnreordered', function (event) {
+                $("#grid").jqxGrid('autoresizecolumns');
+            });
+            $('#grid').on('filter', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+            $('#grid').bind('pagechanged', function () {
+                $('#grid').jqxGrid('autoresizecolumns');
+            });
+
+            $("#excelExport").jqxButton();
+            $("#xmlExport").jqxButton();
+            $("#csvExport").jqxButton();
+            $("#htmlExport").jqxButton();
+            $("#jsonExport").jqxButton();
+            $("#pdfExport").jqxButton();
+            $("#excelExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xls', 'jqxGrid');
+            });
+            $("#xmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'xml', 'jqxGrid');
+            });
+            $("#csvExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'csv', 'jqxGrid');
+            });
+
+            $("#htmlExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'html', 'jqxGrid');
+            });
+            $("#jsonExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'json', 'jqxGrid');
+            });
+            $("#pdfExport").click(function () {
+                $("#grid").jqxGrid('exportdata', 'pdf', 'jqxGrid');
+            });
+        });
+    </script>
 }
-
-</table>

@@ -1,6 +1,8 @@
 ﻿using ProjectExpenseControl.CustomAuthentication;
+using ProjectExpenseControl.DataAccess;
 using ProjectExpenseControl.Models;
 using ProjectExpenseControl.Services;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
@@ -121,5 +123,20 @@ namespace ProjectExpenseControl.Controllers
         //    }
         //    base.Dispose(disposing);
         //}
+
+        public JsonResult GetStatusAprovs()
+        {
+            using (AuthenticationDB db = new AuthenticationDB())
+            {
+                var dbResult = db.StatusAprovs.ToList();
+                var statusaprovs = (from statusaprov in dbResult
+                                    select new
+                                    {
+                                        statusaprov.STA_IDE_STATUS_APROV,
+                                        statusaprov.STA_DES_STATUS
+                                    });
+            return Json(statusaprovs, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
