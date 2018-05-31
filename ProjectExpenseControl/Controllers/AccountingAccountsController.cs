@@ -1,27 +1,21 @@
-﻿using ProjectExpenseControl.CustomAuthentication;
-using ProjectExpenseControl.DataAccess;
+﻿using ProjectExpenseControl.DataAccess;
 using ProjectExpenseControl.Models;
-using ProjectExpenseControl.Services;
-using System;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 
 namespace ProjectExpenseControl.Controllers
 {
-    [CustomAuthorize(Roles = "Administrador")]
     public class AccountingAccountsController : Controller
     {
-        private AccountingAccountRepository _db;
-        public AccountingAccountsController()
-        {
-            _db = new AccountingAccountRepository();
-        }
+        private AuthenticationDB db = new AuthenticationDB();
 
         // GET: AccountingAccounts
         public ActionResult Index()
         {
-            return View(_db.GetAll());
+            return View(db.AccountingAccounts.ToList());
         }
 
         // GET: AccountingAccounts/Details/5
@@ -31,7 +25,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountingAccount accountingAccount = _db.GetOne(id);
+            AccountingAccount accountingAccount = db.AccountingAccounts.Find(id);
             if (accountingAccount == null)
             {
                 return HttpNotFound();
@@ -50,13 +44,13 @@ namespace ProjectExpenseControl.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ACC_IDE_ACCOUNT,ACC_DES_ACCOUNT")] AccountingAccount accountingAccount)
+        public ActionResult Create([Bind(Include = "ACC_IDE_ACCOUNT,ACC_DES_ACCOUNT,ACC_FH_CREATED")] AccountingAccount accountingAccount)
         {
             if (ModelState.IsValid)
             {
-                accountingAccount.ACC_FH_CREATED = DateTime.Now;
-                if(_db.Create(accountingAccount))
-                    return RedirectToAction("Index");
+                db.AccountingAccounts.Add(accountingAccount);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             return View(accountingAccount);
@@ -69,7 +63,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountingAccount accountingAccount = _db.GetOne(id);
+            AccountingAccount accountingAccount = db.AccountingAccounts.Find(id);
             if (accountingAccount == null)
             {
                 return HttpNotFound();
@@ -86,8 +80,9 @@ namespace ProjectExpenseControl.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(_db.Update(accountingAccount))
-                    return RedirectToAction("Index");
+                db.Entry(accountingAccount).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(accountingAccount);
         }
@@ -99,7 +94,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            AccountingAccount accountingAccount = _db.GetOne(id);
+            AccountingAccount accountingAccount = db.AccountingAccounts.Find(id);
             if (accountingAccount == null)
             {
                 return HttpNotFound();
@@ -112,33 +107,35 @@ namespace ProjectExpenseControl.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            if(_db.Delete(id))
-                return RedirectToAction("Index");
-           
-            return RedirectToAction("Delete/"+id);
+            AccountingAccount accountingAccount = db.AccountingAccounts.Find(id);
+            db.AccountingAccounts.Remove(accountingAccount);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
         public JsonResult GetAccountinAccounts()
         {
-            AuthenticationDB db = new AuthenticationDB();
-            var dbResult = db.AccountingAccounts.ToList();
-            var accounts = (from account in dbResult
-                         select new
-                         {
-                             account.ACC_IDE_ACCOUNT,
-                             account.ACC_DES_ACCOUNT,
-                             account.ACC_FH_CREATED
-                         });
-            return Json(accounts, JsonRequestBehavior.AllowGet);
+            using (AuthenticationDB db = new AuthenticationDB())
+            {
+                var dbResult = db.AccountingAccounts.ToList();
+                var accounts = (from account in dbResult
+                                select new
+                                {
+                                    account.ACC_IDE_ACCOUNT,
+                                    account.ACC_DES_ACCOUNT,
+                                    account.ACC_FH_CREATED
+                                });
+                return Json(accounts, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

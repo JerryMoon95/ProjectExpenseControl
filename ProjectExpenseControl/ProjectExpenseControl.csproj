@@ -712,11 +712,11 @@
     <Content Include="Views\StatusAprovs\Details.cshtml" />
     <Content Include="Views\StatusAprovs\Edit.cshtml" />
     <Content Include="Views\StatusAprovs\Index.cshtml" />
-    <Content Include="Views\AccountingAccounts\Create.cshtml" />
-    <Content Include="Views\AccountingAccounts\Delete.cshtml" />
-    <Content Include="Views\AccountingAccounts\Details.cshtml" />
-    <Content Include="Views\AccountingAccounts\Edit.cshtml" />
-    <Content Include="Views\AccountingAccounts\Index.cshtml" />
+    <Content Include="Views\AccountingAccounts2\Create.cshtml" />
+    <Content Include="Views\AccountingAccounts2\Delete.cshtml" />
+    <Content Include="Views\AccountingAccounts2\Details.cshtml" />
+    <Content Include="Views\AccountingAccounts2\Edit.cshtml" />
+    <Content Include="Views\AccountingAccounts2\Index.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
@@ -736,6 +736,11 @@
     <Content Include="Views\Requests\Prove.cshtml" />
     <Content Include="Views\Reports\ViewGetAreas.cshtml" />
     <Content Include="Views\Shared\_LayoutBottonsExportData.cshtml" />
+    <Content Include="Views\AccountingAccounts\Create.cshtml" />
+    <Content Include="Views\AccountingAccounts\Delete.cshtml" />
+    <Content Include="Views\AccountingAccounts\Details.cshtml" />
+    <Content Include="Views\AccountingAccounts\Edit.cshtml" />
+    <Content Include="Views\AccountingAccounts\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

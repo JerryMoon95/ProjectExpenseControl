@@ -64,13 +64,13 @@
                     theme: 'darkblue',
                     ready: function () {
                         $('#grid').jqxGrid('autoresizecolumns');
-                        },
+                    },
                     pageSize: 10,
                     sortable: true,
                     filterable: true,
                     pageable: true,
                     columnsresize: true,
-                    columnsreorder:true,
+                    columnsreorder: true,
                     autoshowfiltericon: true,
                     columns: [
                         { text: '', cellsrenderer: editar },
@@ -78,17 +78,17 @@
                         { text: '', cellsrenderer: borrar },
                         { text: 'Cuenta Contable', dataField: 'ACC_IDE_ACCOUNT' },
                         { text: 'Descripción de la Cuenta', dataField: 'ACC_DES_ACCOUNT' },
-                        { text: 'Fecha de Creación', dataField: 'ACC_FH_CREATED', cellsformat:'d'  },
+                        { text: 'Fecha de Creación', dataField: 'ACC_FH_CREATED', cellsformat: 'd' },
                     ]
                 });
 
             $("#grid").on('columnreordered', function (event) {
                 $("#grid").jqxGrid('autoresizecolumns');
             });
-            $('#grid').on('filter', function() {
+            $('#grid').on('filter', function () {
                 $('#grid').jqxGrid('autoresizecolumns');
             });
-            $('#grid').bind('pagechanged', function() {
+            $('#grid').bind('pagechanged', function () {
                 $('#grid').jqxGrid('autoresizecolumns');
             });
 
