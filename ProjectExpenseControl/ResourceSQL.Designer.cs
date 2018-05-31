@@ -106,7 +106,7 @@ namespace ProjectExpenseControl {
         ///		INSERT INTO @temp  select STA_IDE_STATUS_APROV from StatusAprovs
         ///	END
         ///
-        ///	IF  ( @TYPE_USE [rest of string was truncated]&quot;;.
+        ///	IF  (@TYPE_USER [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Create_SP_GetRequests {
             get {

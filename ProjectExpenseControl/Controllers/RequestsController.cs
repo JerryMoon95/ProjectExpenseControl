@@ -15,9 +15,11 @@ namespace ProjectExpenseControl.Controllers
     public class RequestsController : Controller
     {
         private RequestsRepository _db;
+        private BudgetRepository _bud;
         public RequestsController()
         {
             _db = new RequestsRepository();
+            _bud = new BudgetRepository();
         }
 
         // GET: Requests
@@ -27,7 +29,7 @@ namespace ProjectExpenseControl.Controllers
             if (user != null)
             {
                 int option = 0;
-                
+
                 switch (user.RoleName[0]) {
                     case "Administrador":
                         option = 1;
@@ -71,6 +73,12 @@ namespace ProjectExpenseControl.Controllers
         // GET: Requests/Create
         public ActionResult Create()
         {
+            CustomSerializeModel user = (CustomSerializeModel)Session["user"];
+            if (user != null)
+            { 
+                ViewBag.Budget = _bud.GetAllByArea(user.IdArea);
+            }
+
             return View();
         }
 
@@ -97,6 +105,11 @@ namespace ProjectExpenseControl.Controllers
                         _repo.CrearDirectorio(id.ToString(), Server.MapPath("~"));
                         //
                         return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Budget = _bud.GetAllByArea(user.IdArea);
+                        return View(request);
                     }
                 }
                 else
@@ -163,16 +176,6 @@ namespace ProjectExpenseControl.Controllers
             else
                 return RedirectToAction("Delete/"+id);
         }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
-
         
         public ActionResult Prove(int? id)
         {
@@ -287,10 +290,6 @@ namespace ProjectExpenseControl.Controllers
         }
 
 
-
-
-
-
         [CustomAuthorize(Roles = "Administrador, JefeArea")]
         /*TYPES APPROVE
          * 1 -> Aprobar Solicitud
@@ -302,7 +301,8 @@ namespace ProjectExpenseControl.Controllers
                 ViewBag.Msg = "Exito al aprobar";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
-            return View("Index");
+
+            return RedirectToAction("Index");
         }
 
         /*TYPES REJECT
@@ -316,7 +316,7 @@ namespace ProjectExpenseControl.Controllers
                 ViewBag.Msg = "Exito al " + ((type == 1) ? "Rechazar la Aprobación" : "Rechazar la Comprobación");
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
 

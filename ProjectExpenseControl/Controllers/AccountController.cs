@@ -63,6 +63,7 @@ namespace ProjectExpenseControl.Controllers
                             UserId = user.UserId,
                             FirstName = user.FirstName,
                             LastName = user.LastName,
+                            IdArea = user.IdArea,
                             RoleName = user.Roles.Select(r => r.TUSR_DES_TYPE).ToList()
                         };
                         Session["user"] = userModel;

@@ -40,16 +40,20 @@ BEGIN
 		INSERT INTO @temp  values(11)
 	END
 
-	
 	BEGIN TRY					
 			SELECT 
-				*
+				R.*
 			FROM 
-				Requests
+				Requests R INNER JOIN Users U ON REQ_IDE_USER = USR_IDE_USER
 			WHERE
-				((REQ_IDE_USER = @IDE_USER AND @TYPE_USER = 2) OR
-				(REQ_IDE_USER <> @IDE_USER AND (@TYPE_USER = 1 OR @TYPE_USER = 3 OR @TYPE_USER = 4))) 
-				AND REQ_IDE_STATUS_APROV in (select * from @temp)
+				( ( REQ_IDE_USER = @IDE_USER AND @TYPE_USER = 2 ) OR
+				  ( REQ_IDE_USER <> @IDE_USER AND (@TYPE_USER = 1 OR @TYPE_USER = 3 OR @TYPE_USER = 4) )  
+				) 
+				AND REQ_IDE_STATUS_APROV in (SELECT * FROM @temp)
+				AND ( 
+							 ( USR_IDE_AREA in ( SELECT TOP 1 USR_IDE_AREA FROM Users WHERE USR_IDE_USER = @IDE_USER ) AND @TYPE_USER = 3  )  OR
+							 ( USR_IDE_USER IS NOT NULL   AND (@TYPE_USER = 1 OR @TYPE_USER = 2 OR @TYPE_USER = 4) )
+						)
 	END TRY
 
 	BEGIN CATCH
@@ -57,7 +61,6 @@ BEGIN
 			BEGIN
 				SET @ErrorMessage = ERROR_MESSAGE()
 				RAISERROR('Error has occurred in ...', 16, 1, @ErrorMessage)
-				RETURN 1 
 			END
 	END CATCH
 END
