@@ -40,11 +40,44 @@
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.BUD_DES_PERIOD, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.BUD_DES_PERIOD, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BUD_DES_PERIOD, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="BUD_DES_PERIOD">PERDIODO</label>
+            <div class="col-md-10">
+                <select class="form-control" data-val="true" data-val-length="El campo PERIODO debe ser una cadena con una longitud máxima de 10." data-val-length-max="10" data-val-required="El campo PERIODO es obligatorio." id="BUD_DES_PERIOD" name="BUD_DES_PERIOD">
+                    <option value="">--Seleccione un Periodo--</option>
+
+                    <option value="Enero">Enero</option>
+
+                    <option value="Febrero">Febrero</option>
+
+                    <option value="Marzo">Marzo</option>
+
+                    <option value="Abril">Abril</option>
+
+                    <option value="Mayo">Mayo</option>
+
+                    <option value="Junio">Junio</option>
+
+                    <option value="Julio">Julio</option>
+
+                    <option value="Agosto">Agosto</option>
+
+                    <option value="Septiembre">Septiembre</option>
+
+                    <option value="Octubre">Octubre</option>
+
+                    <option value="Noviembre">Noviembre</option>
+
+                    <option value="Diciembre">Diciembre</option>
+                </select>
             </div>
         </div>
 

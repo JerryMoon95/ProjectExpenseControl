@@ -76,7 +76,7 @@ namespace ProjectExpenseControl.Controllers
             CustomSerializeModel user = (CustomSerializeModel)Session["user"];
             if (user != null)
             { 
-                ViewBag.Budget = _bud.GetAllByArea(user.IdArea);
+                ViewBag.ListBudgets = _bud.GetAllByArea(user.IdArea);
             }
 
             return View();
@@ -108,7 +108,7 @@ namespace ProjectExpenseControl.Controllers
                     }
                     else
                     {
-                        ViewBag.Budget = _bud.GetAllByArea(user.IdArea);
+                        ViewBag.ListBudgets = _bud.GetAllByArea(user.IdArea);
                         return View(request);
                     }
                 }
@@ -132,6 +132,11 @@ namespace ProjectExpenseControl.Controllers
             if (request == null)
             {
                 return HttpNotFound();
+            }
+            CustomSerializeModel user = (CustomSerializeModel)Session["user"];
+            if (user != null)
+            {
+                ViewBag.ListBudgets = _bud.GetAllByArea(user.IdArea);
             }
             return View(request);
         }

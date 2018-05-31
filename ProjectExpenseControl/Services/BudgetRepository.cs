@@ -88,8 +88,8 @@ namespace ProjectExpenseControl.Services
                 using (AuthenticationDB dbContext = new AuthenticationDB())
                 {
                     var Buds = (from budget in dbContext.Budgets
-                                where string.Compare(idArea, budget.BUD_IDE_AREA, StringComparison.OrdinalIgnoreCase) == 0
-                                select budget).ToList<Budget>();
+                               where budget.BUD_IDE_AREA == idArea
+                               select budget).ToList<Budget>();
                     return Buds;
                 }
             }

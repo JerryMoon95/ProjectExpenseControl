@@ -68,6 +68,7 @@ namespace ProjectExpenseControl.Migrations
                         REQ_DES_QUANTITY = c.Decimal(nullable: false, precision: 18, scale: 2),
                         REQ_DES_OBSERVATIONS = c.String(maxLength: 200),
                         REQ_IDE_STATUS_APROV = c.Int(nullable: true),
+                        REQ_IDE_PERIOD = c.Int(nullable : false),
                         REQ_FH_CREATED = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.REQ_IDE_REQUEST);

@@ -11,52 +11,74 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Solicitud</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.REQ_IDE_REQUEST)
+<div class="form-horizontal">
+    <h4>Solicitud</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.REQ_IDE_REQUEST)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.REQ_DES_TYPE_GASTO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.REQ_DES_TYPE_GASTO)
-                    @Html.ValidationMessageFor(model => model.REQ_DES_TYPE_GASTO, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.REQ_DES_CONCEPT, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.REQ_DES_CONCEPT, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.REQ_DES_CONCEPT, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.REQ_DES_QUANTITY, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.REQ_DES_QUANTITY, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.REQ_DES_QUANTITY, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.REQ_DES_OBSERVATIONS, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.REQ_DES_OBSERVATIONS, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.REQ_DES_OBSERVATIONS, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.REQ_DES_TYPE_GASTO, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.REQ_DES_TYPE_GASTO)
+                @Html.ValidationMessageFor(model => model.REQ_DES_TYPE_GASTO, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.REQ_DES_CONCEPT, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.REQ_DES_CONCEPT, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.REQ_DES_CONCEPT, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.REQ_DES_QUANTITY, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.REQ_DES_QUANTITY, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.REQ_DES_QUANTITY, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.REQ_DES_OBSERVATIONS, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.REQ_DES_OBSERVATIONS, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.REQ_DES_OBSERVATIONS, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @if (ViewBag.ListBudgets == null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.REQ_IDE_PERIOD, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select class="form-control" data-val="true" data-val-length="El campo PERIODO debe ser una cadena con una longitud máxima de 10." data-val-length-max="10" data-val-required="El campo PERIODO es obligatorio." id="REQ_IDE_PERIOD" name="REQ_IDE_PERIOD">
+                    <option value="">--Sin periodo--</option>
+                </select>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.REQ_IDE_PERIOD, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("REQ_IDE_PERIOD", new SelectList(ViewBag.ListBudgets, "BUD_IDE_BUDGET", "BUD_DES_PERIOD"), "--Seleccione un Periodo --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.REQ_IDE_PERIOD, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
 
 <div>

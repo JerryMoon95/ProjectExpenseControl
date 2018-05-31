@@ -11,7 +11,7 @@ namespace ProjectExpenseControl.Models
     {
         [Key]
         [Required]
-        [Display(Name = "CÓDIGO DE FACTURA")]
+        [Display(Name = "CÓDIGO DE PRESUPUESTO")]
         public int BUD_IDE_BUDGET { get; set; }
 
         [Required]

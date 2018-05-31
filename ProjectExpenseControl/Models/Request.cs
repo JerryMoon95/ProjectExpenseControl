@@ -20,12 +20,12 @@ namespace ProjectExpenseControl.Models
         [Required]
         [Display(Name = "VIÁTICOS")]
         public Boolean REQ_DES_TYPE_GASTO { get; set; }
-
+        
         [Display(Name = "CONCEPTO")]
         [StringLength(100)]
         public string REQ_DES_CONCEPT { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [Display(Name = "CANTIDAD")]
         [Range(0.0,Double.MaxValue, ErrorMessage ="El rango de cantidad del campo {0} es de {1} a {2}")]
         public Decimal REQ_DES_QUANTITY { get; set; }
@@ -37,6 +37,10 @@ namespace ProjectExpenseControl.Models
 
         [Display(Name = "ESTADO DE LA APROBACIÓN")]
         public int REQ_IDE_STATUS_APROV { get; set; }
+
+        [Display(Name = "PERIODO AL QUE PERTENECE")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public int REQ_IDE_PERIOD { get; set; }
 
         [Required]
         [Display(Name = "FECHA ME EMISIÓN")]
