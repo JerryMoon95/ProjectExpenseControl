@@ -89,7 +89,7 @@ namespace ProjectExpenseControl.Controllers
                 {
                     request.REQ_FH_CREATED = DateTime.Now;
                     request.REQ_IDE_USER = user.UserId;
-                    request.REQ_IDE_STATUS_APROV = 0;
+                    request.REQ_IDE_STATUS_APROV = 5;
                     int id = _db.Create(request);
                     if (id > 0)
                     {
