@@ -193,6 +193,37 @@ namespace ProjectExpenseControl.Services
             }
             return false;
         }
+
+        public bool updateBudget(int? idReq)
+        {
+            if (idReq != null)
+            {
+                Request model = GetOne(idReq);
+                if (model != null)
+                {
+                    BudgetRepository bud = new BudgetRepository();
+                    return bud.UpdateBudget(model.REQ_IDE_PERIOD, model.REQ_DES_QUANTITY);
+                }
+                    
+            }
+            return false;
+        }
+
+        public decimal GetCurrentBudget(int? idReq)
+        {
+            if (idReq != null)
+            {
+                Request model = GetOne(idReq);
+                if (model != null)
+                {
+                    BudgetRepository bud = new BudgetRepository();
+                    return bud.GetOne(model.REQ_IDE_PERIOD).BUD_DES_QUANTITY;
+                }
+
+            }
+            return -000;
+
+        }
     }
 
 }

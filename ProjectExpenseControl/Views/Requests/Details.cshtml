@@ -6,7 +6,17 @@
 }
 
 <h2>Detalles de la Solicitud</h2>
-
+@if (ViewBag.CurrentBudget != null)
+{
+    if (Model.REQ_DES_QUANTITY > ViewBag.CurrentBudget)
+    {
+        <span class="text-danger">AVISO: Podría sobrepasar el presupuesto</span>
+    }
+}
+else
+{
+    @: ERROR
+}
 <div>
     <h4>Solicitud número @Model.REQ_IDE_REQUEST</h4>
     <hr />
@@ -16,7 +26,7 @@
         </dt>
 
         <dd>
-            @if(user.UserId == Model.REQ_IDE_USER)
+            @if (user.UserId == Model.REQ_IDE_USER)
             {
                 @:Yo
             }

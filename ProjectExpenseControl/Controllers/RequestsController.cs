@@ -67,6 +67,7 @@ namespace ProjectExpenseControl.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.CurrentBudget = _db.GetCurrentBudget(id);
             return View(request);
         }
 
@@ -87,7 +88,7 @@ namespace ProjectExpenseControl.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "REQ_IDE_REQUEST,REQ_IDE_USER,REQ_IDE_AREA,REQ_DES_TYPE_GASTO,REQ_DES_CONCEPT,REQ_DES_QUANTITY,REQ_DES_OBSERVATIONS,REQ_IDE_STATUS_APROV,REQ_FH_CREATED")] Request request)
+        public ActionResult Create(Request request)
         {
             if (ModelState.IsValid)
             {
@@ -330,10 +331,11 @@ namespace ProjectExpenseControl.Controllers
         {
 
             if (_db.ApproveCXP(id))
+                //TODO: llamar a _db.updateBudget(id);
                 ViewBag.Msg = "Exito al Rechazar la Comprobación";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
-            return View("Index");
+            return RedirectToAction("Index");
         }
 
         public ActionResult RejectCXP(int id)
@@ -343,7 +345,7 @@ namespace ProjectExpenseControl.Controllers
                 ViewBag.Msg = "Exito al Rechazar la Comprobación";
             else
                 ViewBag.Msg = "Algo ocurrió... Vuelve a intentarlo. Sino contacta a soporte";
-            return View("Index");
+            return RedirectToAction("Index");
         }
     }
 }

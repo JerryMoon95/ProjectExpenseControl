@@ -95,5 +95,23 @@ namespace ProjectExpenseControl.Services
             }
             return null;
         }
+
+        public bool UpdateBudget(int? id, decimal newQuantity)
+        {
+            if (id != null)
+            {
+                using (AuthenticationDB db = new AuthenticationDB())
+                {
+                    var bud = db.Budgets.Find(id);
+                    if (bud != null)
+                    {
+                        bud.BUD_DES_QUANTITY = bud.BUD_DES_QUANTITY - newQuantity;
+                        return (db.SaveChanges() > 0) ? true : false;
+                    }
+                }
+            }
+            return false;
+        }
+
     }
 }

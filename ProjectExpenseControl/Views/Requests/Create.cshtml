@@ -65,7 +65,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.REQ_IDE_PERIOD, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("REQ_IDE_PERIOD", new SelectList(ViewBag.ListBudgets, "BUD_IDE_BUDGET", "BUD_DES_PERIOD"), "--Seleccione un Periodo --", new { @class = "form-control" })
+                @Html.DropDownList("REQ_IDE_PERIODs", new SelectList(ViewBag.ListBudgets, "BUD_IDE_BUDGET", "BUD_DES_PERIOD"), "--Seleccione un Periodo --", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.REQ_IDE_PERIOD, "", new { @class = "text-danger" })
             </div>
         </div>
